@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Assistance(models.Model):
@@ -23,6 +24,15 @@ class Incident(models.Model):
 		(Tsunami, 'Tsunami'),
 	)
 
+	submitter = models.ForeignKey(
+		User,
+		on_delete=models.CASCADE,
+		null=True)
+
+	caller = models.CharField(
+		max_length=50,
+		default='Anonymous')
+
 	incident_type = models.CharField(
 		max_length=3,
 		choices=INCIDENT_TYPE_CHOICES,
@@ -45,6 +55,10 @@ class Incident(models.Model):
 			))
 
 	location = models.TextField(default ='Singapore')
+
+	is_closed = models.BooleanField(default=False)
+
+	incident_closed_date = models.DateTimeField(null=True)
 
 	class Meta:
 		ordering = ["-incident_date"]

@@ -20,5 +20,5 @@ from . import views
 urlpatterns = [
 	path('', views.home),
     path('admin/', admin.site.urls),
-    path('home/', include('cms.urls'))
+    path('cms/', include('cms.urls'))
 ]
