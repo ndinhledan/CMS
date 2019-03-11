@@ -10,5 +10,4 @@ urlpatterns =[
 	path('accounts/', include('django.contrib.auth.urls'), name='login'),
 	path('create-incident/', views.CreateIncidentView.as_view(),name='create-incident'),
 	#path('<int: incident_id>/', view, name=),
-	#ath('map/', view, name=),
 ]

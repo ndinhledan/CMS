@@ -123,4 +123,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/home'
+LOGIN_URL = 'cms:login'
+
+LOGIN_REDIRECT_URL = 'cms:home'

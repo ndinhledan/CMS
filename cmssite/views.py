@@ -1,4 +1,6 @@
 from django.shortcuts import redirect
 
+
 def home(request):
-	return redirect('cms:login')
+	return redirect('cms:home')
+

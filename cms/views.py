@@ -1,15 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils import timezone
-
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Incident
 from .forms import IncidentForm
 # Create your views here.
 
-
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
 	model = Incident
 
 	context_object_name = 'incident_list'
@@ -18,7 +18,7 @@ class IndexView(generic.ListView):
 	def get_queryset(self):
 		return Incident.objects.order_by('-incident_date')
 
-class CreateIncidentView(generic.TemplateView):
+class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 	template_name = 'cms/createincident.html'
 
 	def get(self, request):

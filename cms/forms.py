@@ -1,5 +1,7 @@
 from django import forms
 from .models import Incident
+
+
 class IncidentForm(forms.ModelForm):
 	street_name = forms.CharField()
 	apartment_number = forms.CharField()
