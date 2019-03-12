@@ -7,10 +7,12 @@ class IncidentForm(forms.ModelForm):
 	apartment_number = forms.CharField()
 	postal_code = forms.CharField()
 
+
 	class Meta:
 		model = Incident
 		fields = (
 			'incident_type',
 			'assistance_type',
 			'severity',
+			'caller',
 			)

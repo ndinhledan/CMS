@@ -18,7 +18,7 @@
 		</tr>
 		{% for incident in incident_list %}
 		<tr>
-			<td>{{ incident.id }}</td>
+			<td> <a href="{% url 'cms:case' incident.id %}">{{ incident.id }}</a></td>
 			<td>{{ incident.assistance_type }}</td>
 			<td>{{ incident.severity }}</td>
 			{% timezone "Asia/Singapore" %}
