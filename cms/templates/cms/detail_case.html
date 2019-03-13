@@ -22,7 +22,7 @@
 		Submitted by: {{ incident.submitter.username }}
 		<form method="post">
 			{% csrf_token %}
-			<button type="submit">Close case</button>
+			<button type="submit" onclick="return confirm('Are you sure?');">Close case</button>
 		</form>
 		
 

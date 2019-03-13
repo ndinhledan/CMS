@@ -1,6 +1,11 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{%static 'cms/style.css' %}">
 {% load tz %}
+{% if messages %}
+    {% for message in messages %}
+    	{{ message }}
+    {% endfor %}
+{% endif %}
 <form action="{% url 'cms:create-incident' %}">
 	<button type="submit">Submit Case</button>
 </form>
@@ -11,7 +16,7 @@
 		<tr>
 			<th>Case ID</th>
 			<th>Type of Assistance Required</th>
-			<th>Level of Security</th>
+			<th><a href="{% url 'cms:order' severity %}"></a> Level of Security</th>
 			<th>Date</th>
 			<th>Time</th>
 			<th>Location</th>

@@ -8,15 +8,13 @@ closed by
 
 
 
-
-
-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 from .models import Incident
 from .forms import IncidentForm
@@ -28,8 +26,17 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	context_object_name = 'incident_list'
 	template_name = 'cms/index.html'
 
+	conditions =[
+		"severity": "severity",
+		"date" : "incident_date__date"
+	]
+
 	def get_queryset(self):
-		return Incident.objects.filter(is_closed=False).order_by('-incident_date')
+		if 'condition' in self.kwargs:
+			return Incident.objects.filter(is_closed=False).order_by('-' + self.kwargs['condition'])
+		else:
+			return Incident.objects.filter(is_closed=False).order_by('-incident_date')
+
 
 class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 	template_name = 'cms/createincident.html'
@@ -61,4 +68,6 @@ class DetailCase(generic.DetailView):
 		self.object.is_closed = True
 		self.object.incident_closed_date = timezone.now()
 		self.object.save()
-		return render(request, "cms/closed_confirm.html")
+		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
+		return redirect('cms:home')
+
