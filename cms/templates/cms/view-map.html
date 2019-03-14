@@ -9,7 +9,7 @@
        * element that contains the map. */
       #map {
         height: 700px;
-        width: 700px;
+        width: 800px;
       }
     </style>
   </head>
@@ -19,10 +19,25 @@
       var map;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 1.352, lng: 103.819},
+          center: {lat: 1.344, lng: 103.839},
           zoom: 11
         });
+
+      // add marker for each region
+      addMarker({lat:1.442, lng:103.823});//north
+      addMarker({lat:1.338, lng:103.695});//west
+      addMarker({lat:1.344, lng:103.813});//central
+      addMarker({lat:1.354, lng:103.941});//east
+      addMarker({lat:1.265, lng:103.818});//south
       }
+
+      // function to add marker to map
+      function addMarker(lat_lng){
+        var marker = new google.maps.Marker({
+          position: lat_lng,
+          map:map,
+        });
+        }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwnOKdHVcbd77ol8nQu81CPgr3CnjBfMc&callback=initMap"
     async defer></script>
