@@ -62,3 +62,6 @@ class DetailCase(generic.DetailView):
 		self.object.incident_closed_date = timezone.now()
 		self.object.save()
 		return render(request, "cms/closed_confirm.html")
+
+class MapView(LoginRequiredMixin, generic.TemplateView):
+	template_name = 'cms/view-map.html'

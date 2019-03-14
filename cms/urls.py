@@ -10,4 +10,5 @@ urlpatterns =[
 	path('accounts/', include('django.contrib.auth.urls'), name='login'),
 	path('create-incident/', views.CreateIncidentView.as_view(),name='create-incident'),
 	path('case/<int:pk>/', views.DetailCase.as_view(), name='case'),
+	path('view-map/', views.MapView.as_view(), name='view-map'),
 ]
