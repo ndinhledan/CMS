@@ -1,10 +1,10 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{%static 'cms/style.css' %}">
 {% load tz %}
-<form action="{% url 'cms:create-incident' %}">
-	<button type="submit">Submit Case</button>
-</form>
 
+<form action="{% url 'cms:login' %}" align="right">
+	<button type="submit">Log out</button>
+</form>
 {% if incident_list %}
 	<h1>List of Incident</h1>
 	<table>
@@ -33,3 +33,7 @@
 {% else %}
 	<p>No incidents are available.</p>
 {% endif %}
+
+<form action="{% url 'cms:create-incident' %}">
+	<button type="submit">Submit Case</button>
+</form>

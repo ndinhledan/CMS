@@ -5,7 +5,7 @@
 </head>
 <body>
 	<h1>Case detail</h1>
-		Case ID: {{ incident.id }} 
+		Case ID: {{ incident.id }}
 		<br>
 		Type of assistance required: {{ incident.get_incident_type_display }}
 		<br>
@@ -20,11 +20,15 @@
 		Name of Caller: {{ incident.caller }}
 		<br>
 		Submitted by: {{ incident.submitter.username }}
-		<form method="post">
-			{% csrf_token %}
-			<button type="submit">Close case</button>
+		{% if user.is_staff %}
+			<form method="post">
+				{% csrf_token %}
+				<button type="submit">Close case</button>
+			</form>
+		{% endif %}
+		<form action="javascript:history.go(-1)">
+			<button type="submit">Go Back</button>
 		</form>
-		
-
+		<br>
 </body>
 </html>
