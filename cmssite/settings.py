@@ -27,13 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
                 '127.0.0.1',
-                'soft-donkey-92.localtunnel.me',
+                '0.0.0.0',
                 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'widget_tweaks',
     'cms.apps.CmsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
