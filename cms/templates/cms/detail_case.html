@@ -20,11 +20,16 @@
 		Name of Caller: {{ incident.caller }}
 		<br>
 		Submitted by: {{ incident.submitter.username }}
+		{% if user.is_staff %}
 		<form method="post">
 			{% csrf_token %}
 			<button type="submit" onclick="return confirm('Are you sure?');">Close case</button>
 		</form>
-		
+		{% endif %}
+		<form action="javascript:history.go(-1)">
+			<button type="submit">Go Back</button>
+		</form>
+		<br>		
 
 </body>
 </html>
