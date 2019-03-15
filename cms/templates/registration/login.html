@@ -1,11 +1,109 @@
-<h1>Welcome to CMS</h1>
-<p>
-	You can log in here!
-</p>
-<h2>Login</h2>
-<form method="post">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<button type="submit">Log in</button>
-	
-</form>
+<!DOCTYPE html>
+<html lang="en">
+{% load widget_tweaks %}
+
+<head>
+	<title>Crisis Management System</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}" type='text/css' />
+</head>
+
+<style>
+	h2 {
+		text-align: center;
+		bottom: 50px;
+		position: relative;
+
+
+	}
+
+	img {
+		position: relative;
+		left: 150px;
+		top: -10px;
+	}
+
+	.vl {
+		border-left: 3px solid black;
+		height: 380px;
+		position: absolute;
+		left: 93%;
+		top: -90px;
+	}
+
+	.vertical-center {
+		align-items: center;
+		display: flex;
+		min-height: 100vh;
+	}
+
+	html {
+		height: 100%;
+	}
+
+	.btn-outline-dark {
+		width: 200px;
+		position: relative;
+		left: 70px;
+		top: 20px;
+	}
+</style>
+
+<div class="vertical-center">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<img src="{% static 'cms/logo.png' %}" class="img-responsive">
+				<div class="vl"></div>
+			</div>
+
+			<div class="col-md-6">
+
+				<form method="post" novalidate>
+					{% csrf_token %}
+
+					{% for hidden_field in form.hidden_fields %}
+					{{ hidden_field }}
+					{% endfor %}
+
+					{% if form.non_field_errors %}
+					<div class="alert alert-danger" role="alert">
+						{% for error in form.non_field_errors %}
+						{{ error }}
+						{% endfor %}
+					</div>
+					{% endif %}
+
+					{% for field in form.visible_fields %}
+					<div class="form-group">
+						{{ field.label_tag }}
+
+						{% if form.is_bound %}
+						{% if field.errors %}
+						{% render_field field class="form-control is-invalid" %}
+						{% for error in field.errors %}
+						<div class="invalid-feedback">
+							{{ error }}
+						</div>
+						{% endfor %}
+						{% else %}
+						{% render_field field class="form-control is-valid" %}
+						{% endif %}
+						{% else %}
+						{% render_field field class="form-control" %}
+						{% endif %}
+
+						{% if field.help_text %}
+						<small class="form-text text-muted">{{ field.help_text }}</small>
+						{% endif %}
+					</div>
+					{% endfor %}
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>
