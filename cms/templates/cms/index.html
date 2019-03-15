@@ -1,6 +1,11 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{%static 'cms/style.css' %}">
 {% load tz %}
+{% if messages %}
+    {% for message in messages %}
+    	{{ message }}
+    {% endfor %}
+{% endif %}
 <form action="{% url 'cms:create-incident' %}">
 	<button type="submit">Submit Case</button>
 </form>
@@ -11,14 +16,14 @@
 		<tr>
 			<th>Case ID</th>
 			<th>Type of Assistance Required</th>
-			<th>Level of Security</th>
+			<th></a> Level of Security</th>
 			<th>Date</th>
 			<th>Time</th>
 			<th>Location</th>
 		</tr>
 		{% for incident in incident_list %}
 		<tr>
-			<td>{{ incident.id }}</td>
+			<td> <a href="{% url 'cms:case' incident.id %}">{{ incident.id }}</a></td>
 			<td>{{ incident.assistance_type }}</td>
 			<td>{{ incident.severity }}</td>
 			{% timezone "Asia/Singapore" %}
