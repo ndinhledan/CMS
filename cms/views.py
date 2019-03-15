@@ -71,3 +71,7 @@ class DetailCase(generic.DetailView):
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
 		return redirect('cms:home')
 
+		return render(request, "cms/closed_confirm.html")
+
+class MapView(LoginRequiredMixin, generic.TemplateView):
+	template_name = 'cms/view-map.html'
