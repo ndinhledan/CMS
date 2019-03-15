@@ -26,10 +26,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	context_object_name = 'incident_list'
 	template_name = 'cms/index.html'
 
-	conditions =[
+	conditions ={
 		"severity": "severity",
 		"date" : "incident_date__date"
-	]
+	}
 
 	def get_queryset(self):
 		if 'condition' in self.kwargs:

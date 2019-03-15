@@ -14,14 +14,18 @@ class Assistance(models.Model):
 class Incident(models.Model):
 	Fire = 'FIR'
 	Haze = 'HAZ'
-	Cat_on_tree = 'CAT'
-	Tsunami = 'TSU'
+	Bird = 'BIR'
+	sunami = 'TSU'
+	Aftershock = 'AFT'
+	Terrorist = 'TER'
 
 	INCIDENT_TYPE_CHOICES = (
-		(Fire,'Fire'),
+		(Fire,'Fire outbreak'),
 		(Haze, 'Haze'),
-		(Cat_on_tree, 'Cat on a tree'),
+		(Bird, 'Bird flu outbreak'),
 		(Tsunami, 'Tsunami'),
+		(Aftershock, 'Earthquake Aftershock'),
+		(Terrorist, 'Terrorist Activity')
 	)
 
 	submitter = models.ForeignKey(
