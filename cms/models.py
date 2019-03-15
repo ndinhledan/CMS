@@ -15,7 +15,7 @@ class Incident(models.Model):
 	Fire = 'FIR'
 	Haze = 'HAZ'
 	Bird = 'BIR'
-	sunami = 'TSU'
+	Tsunami = 'TSU'
 	Aftershock = 'AFT'
 	Terrorist = 'TER'
 
