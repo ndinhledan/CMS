@@ -1,0 +1,11 @@
+<h1>Welcome to CMS</h1>
+<p>
+	You can log in here!
+</p>
+<h2>Login</h2>
+<form method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit">Log in</button>
+	
+</form>

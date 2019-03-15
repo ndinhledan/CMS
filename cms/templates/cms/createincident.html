@@ -1,0 +1,7 @@
+<h2>Add New Case</h2>
+
+<form method="post" action="{% url 'cms:create-incident' %}">
+	{%csrf_token%}
+	{{ form.as_p }}
+	<button type="submit" name="Submit Case">Submit Case</button>
+</form>

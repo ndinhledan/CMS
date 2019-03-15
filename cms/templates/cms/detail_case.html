@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello World</title>
+</head>
+<body>
+	<h1>Case detail</h1>
+		Case ID: {{ incident.id }}
+		<br>
+		Type of assistance required: {{ incident.get_incident_type_display }}
+		<br>
+		Level of Severity: {{ incident.severity }}
+		<br>
+		Reported date: {{ incident.incident_date|date:"d M Y" }}
+		<br>
+		Reported time: {{ incident.incident_date|date:"H:i:s" }}
+		<br>
+		Address: {{ incident.location }}
+		<br>
+		Name of Caller: {{ incident.caller }}
+		<br>
+		Submitted by: {{ incident.submitter.username }}
+		{% if user.is_staff %}
+			<form method="post">
+				{% csrf_token %}
+				<button type="submit">Close case</button>
+			</form>
+		{% endif %}
+		<form action="javascript:history.go(-1)">
+			<button type="submit">Go Back</button>
+		</form>
+		<br>
+
+
+</body>
+</html>

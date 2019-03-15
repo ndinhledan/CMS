@@ -1,0 +1,39 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{%static 'cms/style.css' %}">
+{% load tz %}
+
+<form action="{% url 'cms:login' %}" align="right">
+	<button type="submit">Log out</button>
+</form>
+{% if incident_list %}
+	<h1>List of Incident</h1>
+	<table>
+		<tr>
+			<th>Case ID</th>
+			<th>Type of Assistance Required</th>
+			<th>Level of Security</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Location</th>
+		</tr>
+		{% for incident in incident_list %}
+		<tr>
+			<td> <a href="{% url 'cms:case' incident.id %}">{{ incident.id }}</a></td>
+			<td>{{ incident.assistance_type }}</td>
+			<td>{{ incident.severity }}</td>
+			{% timezone "Asia/Singapore" %}
+			<td>{{ incident.incident_date|date:"d M Y" }}</td>
+			<td>{{ incident.incident_date|date:"H:i:s"}}</td>
+			{% endtimezone %}
+			<td>{{incident.location}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	</ul>
+{% else %}
+	<p>No incidents are available.</p>
+{% endif %}
+
+<form action="{% url 'cms:create-incident' %}">
+	<button type="submit">Submit Case</button>
+</form>
