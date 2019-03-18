@@ -15,9 +15,11 @@ from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.auth import logout
 
 from .models import Incident
 from .forms import IncidentForm
+from .location import getCoordinates
 # Create your views here.
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -54,6 +56,7 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 			
 			incident.location = location
 			incident.submitter = request.user
+			incident.lat, incident.long = getCoordinates(int(form.cleaned_data['postal_code']))
 			incident.save()
 			return HttpResponseRedirect(reverse('cms:home'))
 		return render(request, self.template_name, {'form': form})

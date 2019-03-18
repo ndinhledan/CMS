@@ -64,6 +64,9 @@ class Incident(models.Model):
 
 	incident_closed_date = models.DateTimeField(null=True)
 
+	lat = models.FloatField(null=True)
+	long = models.FloatField(null=True)
+
 	class Meta:
 		ordering = ["-incident_date"]
 
