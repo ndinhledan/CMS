@@ -2,7 +2,7 @@ import requests
 
 """This class requires the requests library. Run 'pip install requests' """
 
-APIKEY = 'AIzaSyARJzI7g8mafjZYgR_v3jt5tI-ohyt8Q2s'
+
 #APIKEY = 'test'
 
 """Returns a tuple (lat, long)"""
