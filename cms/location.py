@@ -9,8 +9,8 @@ import requests
 def getCoordinates(zipcode):
 
     url = 'https://maps.googleapis.com/maps/api/geocode/json'
-    
-    
+    APIKEY = "AIzaSyARJzI7g8mafjZYgR_v3jt5tI-ohyt8Q2s"
+
     params = {'address':zipcode, 'components':'country:SG', 'key':APIKEY}
 
     result = requests.get(url, params)
@@ -26,6 +26,3 @@ def getCoordinates(zipcode):
     return (lat, long)
 
 print(getCoordinates(680351))
-
-
-
