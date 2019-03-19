@@ -1,8 +1,12 @@
 import requests
 
 """This class requires the requests library. Run 'pip install requests' """
+import json
 
+with open("apikey.json") as file:
+    data = json.load(file)
 
+APIKEY = data["APIKEY_LOCATION"]
 #APIKEY = 'test'
 
 """Returns a tuple (lat, long)"""
@@ -26,6 +30,3 @@ def getCoordinates(zipcode):
     return (lat, long)
 
 print(getCoordinates(680351))
-
-
-
