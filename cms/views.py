@@ -1,6 +1,6 @@
 '''
 TODO
-filter 
+filter
 view all cases (closed and open)
 form caller, submitter
 closed by
@@ -20,6 +20,7 @@ from django.contrib.auth import logout
 from .models import Incident
 from .forms import IncidentForm
 from .location import getCoordinates
+from .filters import IncidentFilter
 # Create your views here.
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -33,11 +34,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 		"date" : "incident_date__date"
 	}
 
-	def get_queryset(self):
-		if 'condition' in self.kwargs:
-			return Incident.objects.filter(is_closed=False).order_by('-' + self.kwargs['condition'])
-		else:
-			return Incident.objects.filter(is_closed=False).order_by('-incident_date')
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['filter'] = IncidentFilter(self.request.GET,queryset=self.get_queryset())
+		return context
 
 
 class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
@@ -51,9 +51,9 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 		form = IncidentForm(request.POST)
 		if form.is_valid():
 			incident = form.save(commit=False)
-			
+
 			location = form.cleaned_data['street_name'] + " " + form.cleaned_data['apartment_number'] +" " + form.cleaned_data['postal_code']
-			
+
 			incident.location = location
 			incident.submitter = request.user
 			incident.lat, incident.long = getCoordinates(int(form.cleaned_data['postal_code']))
@@ -74,3 +74,7 @@ class DetailCase(generic.DetailView):
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
 		return redirect('cms:home')
 
+		return render(request, "cms/closed_confirm.html")
+
+class MapView(LoginRequiredMixin, generic.TemplateView):
+	template_name = 'cms/view-map.html'
