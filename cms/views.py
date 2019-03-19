@@ -14,15 +14,27 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from bootstrap_modal_forms.mixins import PassRequestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.urls import reverse_lazy
 
 from .models import Incident
-from .forms import IncidentForm
+from .forms import IncidentForm, MessageForm
 from .location import getCoordinates
 from .filters import IncidentFilter
 # Create your views here.
 
+class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
+                     generic.CreateView):
+
+        template_name = 'cms/Message.html'
+        form_class = MessageForm
+        success_message = 'Success: Message was sent.'
+        success_url = reverse_lazy('cms:create-incident')
+
+	
 class IndexView(LoginRequiredMixin, generic.ListView):
 	model = Incident
 
@@ -61,10 +73,9 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 			return HttpResponseRedirect(reverse('cms:home'))
 		return render(request, self.template_name, {'form': form})
 
-class DetailCase(generic.DetailView):
+class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
 	template_name = 'cms/detail_case.html'
 	model = Incident
-
 
 	def post(self, request, pk):
 		self.object = self.get_object()
@@ -72,7 +83,6 @@ class DetailCase(generic.DetailView):
 		self.object.incident_closed_date = timezone.now()
 		self.object.save()
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
-		return redirect('cms:home')
 
 		return render(request, "cms/closed_confirm.html")
 
