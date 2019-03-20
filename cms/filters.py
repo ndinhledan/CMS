@@ -5,6 +5,7 @@ class IncidentFilter(django_filters.FilterSet):
     class Meta:
         model = Incident
         fields = (
+            'id',
 			'assistance_type',
 			'severity',
 			)
