@@ -17,13 +17,13 @@ $(function () {
         //var markerImage = new Image();
         //markerImage.src = 'marker.png';
 
-        addMarker({lat:1.442, lng:103.823}, "North");//north
-        addMarker({lat:1.338, lng:103.695}, "West");//west
-        addMarker({lat:1.344, lng:103.813}, "Central");//central
-        addMarker({lat:1.354, lng:103.941}, "East");//east
-        addMarker({lat:1.265, lng:103.818}, "South");//south
+        addMarker({lat:1.41803, lng:103.821}, "North", psi_north, weather_north);//north
+        addMarker({lat:1.35735, lng:103.695}, "West", psi_west, weather_west);//west
+        addMarker({lat:1.35735, lng:103.821}, "Central", psi_central, weather_central);//central
+        addMarker({lat:1.35735, lng:103.941}, "East", psi_east, weather_east);//east
+        addMarker({lat:1.29587, lng:103.821}, "South", psi_south, weather_south);//south
         
-        function addMarker(lat_lng, displayString){
+        function addMarker(lat_lng, displayString, regionPSI, regionWeather){
             var marker = new google.maps.Marker({
             position: lat_lng,
             map:map,
@@ -32,10 +32,10 @@ $(function () {
             var contentString = '<div class="info-window">' +
                     '<p>' + displayString + '</p>' +
                     '<div class="info-content">' +
-                    '<p>PSI</p>' +
-                    '<p>Weather</p>' +
+                    '<p>PSI: ' + regionPSI + ' </p>' +
+                    '<p>Weather: ' + regionWeather + ' </p>' +
                     '</div>' +
-                    '</div>';
+                    '</div>'; 
             var infowindow = new google.maps.InfoWindow({
                 content: contentString,
                 maxWidth: 160

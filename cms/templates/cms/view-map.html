@@ -18,5 +18,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwnOKdHVcbd77ol8nQu81CPgr3CnjBfMc"></script>
         <script type="text/javascript" src ="{% static 'cms/js/map.js' %}"></script>
+        <script>
+            var psi_north = "{{ psi_north }}";
+            var psi_south = "{{ psi_south}}";
+            var psi_east = "{{ psi_east }}";
+            var psi_west = "{{ psi_west }}";
+            var psi_central = "{{ psi_central }}";
+            var weather_north =  "{{ weather_north }}";
+            var weather_south =  "{{ weather_south }}";
+            var weather_east =  "{{ weather_east }}";
+            var weather_west =  "{{ weather_west }}";
+			var weather_central =  "{{ weather_central }}";
+        </script>
     </body>
 </html>
