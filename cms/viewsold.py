@@ -1,6 +1,6 @@
 '''
 TODO
-filter
+filter 
 view all cases (closed and open)
 form caller, submitter
 closed by
@@ -14,27 +14,13 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from bootstrap_modal_forms.mixins import PassRequestMixin
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.contrib.auth import logout
-from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
 
 from .models import Incident
-from .forms import IncidentForm, MessageForm
-from .location import getCoordinates
-from .filters import IncidentFilter
+from .forms import IncidentForm
 # Create your views here.
 
-class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
-                     generic.CreateView):
-
-        template_name = 'cms/Message.html'
-        form_class = MessageForm
-        success_message = 'Success: Message was sent.'
-        success_url = reverse_lazy('cms:create-incident')
-
-	
 class IndexView(LoginRequiredMixin, generic.ListView):
 	model = Incident
 
@@ -46,10 +32,11 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 		"date" : "incident_date__date"
 	}
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['filter'] = IncidentFilter(self.request.GET,queryset=self.get_queryset())
-		return context
+	def get_queryset(self):
+		if 'condition' in self.kwargs:
+			return Incident.objects.filter(is_closed=False).order_by('-' + self.kwargs['condition'])
+		else:
+			return Incident.objects.filter(is_closed=False).order_by('-incident_date')
 
 
 class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
@@ -63,19 +50,19 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 		form = IncidentForm(request.POST)
 		if form.is_valid():
 			incident = form.save(commit=False)
-
+			
 			location = form.cleaned_data['street_name'] + " " + form.cleaned_data['apartment_number'] +" " + form.cleaned_data['postal_code']
-
+			
 			incident.location = location
 			incident.submitter = request.user
-			incident.lat, incident.long = getCoordinates(int(form.cleaned_data['postal_code']))
 			incident.save()
 			return HttpResponseRedirect(reverse('cms:home'))
 		return render(request, self.template_name, {'form': form})
 
-class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
+class DetailCase(generic.DetailView):
 	template_name = 'cms/detail_case.html'
 	model = Incident
+
 
 	def post(self, request, pk):
 		self.object = self.get_object()
@@ -83,8 +70,10 @@ class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
 		self.object.incident_closed_date = timezone.now()
 		self.object.save()
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
+		return redirect('cms:home')
 
 		return render(request, "cms/closed_confirm.html")
 
 class MapView(LoginRequiredMixin, generic.TemplateView):
 	template_name = 'cms/view-map.html'
+

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
 # Create your models here.
 class Assistance(models.Model):
 	number = models.CharField(
@@ -10,6 +12,12 @@ class Assistance(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class Comment(models.Model):
+        Message = models.CharField(max_length = 200)
+
+        def str(self):
+                return self.Message
 
 class Incident(models.Model):
 	Fire = 'FIR'
@@ -64,7 +72,6 @@ class Incident(models.Model):
 
 	incident_closed_date = models.DateTimeField(null=True)
 
+
 	class Meta:
 		ordering = ["-incident_date"]
-
-

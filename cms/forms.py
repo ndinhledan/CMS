@@ -1,5 +1,6 @@
 from django import forms
-from .models import Incident
+from .models import Incident, Comment
+from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
 
 
 class IncidentForm(forms.ModelForm):
@@ -16,3 +17,7 @@ class IncidentForm(forms.ModelForm):
 			'severity',
 			'caller',
 			)
+class MessageForm(PopRequestMixin, CreateUpdateAjaxMixin,forms.ModelForm):
+        class Meta:
+                model = Comment
+                fields = ('Message',)
