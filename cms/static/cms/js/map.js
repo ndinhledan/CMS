@@ -17,28 +17,30 @@ $(function () {
         //var markerImage = new Image();
         //markerImage.src = 'marker.png';
 
-        addMarker({lat:1.41803, lng:103.821}, "North", psi_north, weather_north);//north
-        addMarker({lat:1.35735, lng:103.695}, "West", psi_west, weather_west);//west
-        addMarker({lat:1.35735, lng:103.821}, "Central", psi_central, weather_central);//central
-        addMarker({lat:1.35735, lng:103.941}, "East", psi_east, weather_east);//east
-        addMarker({lat:1.29587, lng:103.821}, "South", psi_south, weather_south);//south
+        addMarker({lat:1.41803, lng:103.821}, "PSI North: ", psi_north, 40, 0);//north
+        addMarker({lat:1.35735, lng:103.695}, "PSI West: ", psi_west, -50, 50);//west
+        addMarker({lat:1.35735, lng:103.821}, "PSI Central: ", psi_central, 0, 50);//central
+        addMarker({lat:1.35735, lng:103.941}, "PSI East: ", psi_east, 50, 50);//east
+        addMarker({lat:1.29587, lng:103.821}, "PSI South: ", psi_south, 50, 100);//south
+        addMarker({lat:1.41803, lng:103.821}, "Weather North: ", weather_north, -50, 0);//north
+        addMarker({lat:1.35735, lng:103.695}, "Weather West: ", weather_west, -50, 0);//west
+        addMarker({lat:1.35735, lng:103.821}, "Weather Central: ", weather_central, 0, 10);//central
+        addMarker({lat:1.35735, lng:103.941}, "Weather East: ", weather_east, 50, 0);//east
+        addMarker({lat:1.29587, lng:103.821}, "Weather South: ", weather_south, -50, 100);//south
         
-        function addMarker(lat_lng, displayString, regionPSI, regionWeather){
+        function addMarker(lat_lng, displayString, region, width, height){
             var marker = new google.maps.Marker({
             position: lat_lng,
             map:map,
             //icon: markerImage
             });
             var contentString = '<div class="info-window">' +
-                    '<p>' + displayString + '</p>' +
-                    '<div class="info-content">' +
-                    '<p>PSI: ' + regionPSI + ' </p>' +
-                    '<p>Weather: ' + regionWeather + ' </p>' +
-                    '</div>' +
+                    '<p>' + displayString + region + '</p>' +
                     '</div>'; 
             var infowindow = new google.maps.InfoWindow({
                 content: contentString,
-                maxWidth: 160
+                maxWidth: 160,
+                pixelOffset: new google.maps.Size(width,height)
             });
             infowindow.open(map, marker);
         }
