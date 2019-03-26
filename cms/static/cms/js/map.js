@@ -1,3 +1,11 @@
+var markerType = {
+    "incidents": [],
+    "weather": [],
+    "psi": []
+  };
+
+var map;
+
 $(function () {
 
     function initMap() {
@@ -12,56 +20,93 @@ $(function () {
             scrollwheel: false,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-        var map = new google.maps.Map(mapCanvas, mapOptions);
+        map = new google.maps.Map(mapCanvas, mapOptions);
 
         //var markerImage = new Image();
         //markerImage.src = 'marker.png';
 
-        addMarker({lat:1.41803, lng:103.821}, "PSI North: ", psi_north, 40, 0);//north
-        addMarker({lat:1.35735, lng:103.695}, "PSI West: ", psi_west, -50, 50);//west
-        addMarker({lat:1.35735, lng:103.821}, "PSI Central: ", psi_central, 0, 50);//central
-        addMarker({lat:1.35735, lng:103.941}, "PSI East: ", psi_east, 50, 50);//east
-        addMarker({lat:1.29587, lng:103.821}, "PSI South: ", psi_south, 50, 100);//south
-        addMarker({lat:1.41803, lng:103.821}, "Weather North: ", weather_north, -50, 0);//north
-        addMarker({lat:1.35735, lng:103.695}, "Weather West: ", weather_west, -50, 0);//west
-        addMarker({lat:1.35735, lng:103.821}, "Weather Central: ", weather_central, 0, 10);//central
-        addMarker({lat:1.35735, lng:103.941}, "Weather East: ", weather_east, 50, 0);//east
-        addMarker({lat:1.29587, lng:103.821}, "Weather South: ", weather_south, -50, 100);//south
-        
-        function addMarker(lat_lng, displayString, region, width, height){
-            var marker = new google.maps.Marker({
-            position: lat_lng,
-            map:map,
-            //icon: markerImage
-            });
-            var contentString = '<div class="info-window">' +
-                    '<p>' + displayString + region + '</p>' +
-                    '</div>'; 
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString,
-                maxWidth: 160,
-                pixelOffset: new google.maps.Size(width,height)
-            });
-            infowindow.open(map, marker);
-        }
-
-        /* var contentString = '<div class="info-window">' +
-                '<h3>Info Window Content</h3>' +
-                '<div class="info-content">' +
-                '<p>Incident Type</p>' +
-                '</div>' +
-                '</div>';
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString,
-            maxWidth: 400
-        });
-        marker.addListener('click', function () {
-            infowindow.open(map, marker);
-        }); */
-
+        loadMarkers();
         //var styles = [{"featureType": "landscape", "stylers": [{"saturation": -100}, {"lightness": 65}, {"visibility": "on"}]}, {"featureType": "poi", "stylers": [{"saturation": -100}, {"lightness": 51}, {"visibility": "simplified"}]}, {"featureType": "road.highway", "stylers": [{"saturation": -100}, {"visibility": "simplified"}]}, {"featureType": "road.arterial", "stylers": [{"saturation": -100}, {"lightness": 30}, {"visibility": "on"}]}, {"featureType": "road.local", "stylers": [{"saturation": -100}, {"lightness": 40}, {"visibility": "on"}]}, {"featureType": "transit", "stylers": [{"saturation": -100}, {"visibility": "simplified"}]}, {"featureType": "administrative.province", "stylers": [{"visibility": "off"}]}, {"featureType": "water", "elementType": "labels", "stylers": [{"visibility": "on"}, {"lightness": -25}, {"saturation": -100}]}, {"featureType": "water", "elementType": "geometry", "stylers": [{"hue": "#ffff00"}, {"lightness": -25}, {"saturation": -97}]}];
 
         //map.set('styles', styles);
     }
+
     google.maps.event.addDomListener(window, 'load', initMap);
+
+    setInterval(function() {
+        window.location.reload(true);
+    }, 5*60*1000);
+    
+    function loadMarkers(){
+        for (var i = 0; i < locations.length; i++) { 
+            addMarker(locations[i]);
+        }
+
+        addInfoWindow({lat:1.46981, lng:103.817}, "psi", "PSI: ", psi_north, 40, 0);//north
+        addInfoWindow({lat:1.35735, lng:103.695}, "psi", "PSI: ", psi_west, -150, 50);//west
+        addInfoWindow({lat:1.35735, lng:103.821}, "psi", "PSI: ", psi_central, 0, 50);//central
+        addInfoWindow({lat:1.35735, lng:103.941}, "psi", "PSI: ", psi_east, 180, 50);//east
+        addInfoWindow({lat:1.24082, lng:103.828}, "psi", "PSI: ", psi_south, 50, 85);//south
+        addInfoWindow({lat:1.46981, lng:103.817}, "weather", "Weather: ", weather_north, -50, 0);//north
+        addInfoWindow({lat:1.35735, lng:103.695}, "weather", "Weather: ", weather_west, -150, 0);//west
+        addInfoWindow({lat:1.35735, lng:103.821}, "weather", "Weather: ", weather_central, 0, 10);//central
+        addInfoWindow({lat:1.35735, lng:103.941}, "weather", "Weather: ", weather_east, 180, 0);//east
+        addInfoWindow({lat:1.24082, lng:103.828}, "weather", "Weather: ", weather_south, -50, 85);//south
+    }
+    
+    function addInfoWindow(lat_lng, type, displayString, region, width, height){
+        var contentString = '<div class="info-window">' +
+                '<p>' + displayString + region + '</p>' +
+                '</div>'; 
+        var infowindow = new google.maps.InfoWindow({
+            position: lat_lng,
+            content: contentString,
+            maxWidth: 160,
+            pixelOffset: new google.maps.Size(width,height),
+            opened: true
+        });
+        infowindow.open(map);
+        markerType[type].push(infowindow);
+    }
+
+    function addMarker(lat_lng){
+        var marker = new google.maps.Marker({
+        position: lat_lng,
+        map:map,
+        type: "incidents",
+        });
+        markerType["incidents"].push(marker);
+    }
 });
+
+function toggleGroup(type) {
+    if(type=="incidents"){
+        for (var i = 0; i < markerType[type].length; i++) {
+            var marker = markerType[type][i];
+            if (!marker.getVisible()) {
+              marker.setVisible(true);
+            } else {
+              marker.setVisible(false);
+            }
+          }
+    }
+    else{
+        for (var i = 0; i < markerType[type].length; i++) {
+            var infowindow = markerType[type][i];
+            if (infowindow.opened) {
+                var windownew = new google.maps.InfoWindow({
+                    position: infowindow.position,
+                    content: infowindow.content,
+                    maxWidth: 160,
+                    pixelOffset: infowindow.pixelOffset,
+                    opened: false
+                });
+                infowindow.close();
+                markerType[type][i] = windownew;
+            } else {
+                infowindow.open(map);
+                infowindow.opened = true;
+            }
+        }
+    }
+  }

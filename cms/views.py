@@ -76,8 +76,11 @@ class DetailCase(generic.DetailView):
 
 		return render(request, "cms/closed_confirm.html")
 
-from API.weather import *
+from API.weather import getPSI, getWeather
+import json
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def mapview(request):
 
 	psi_north = getPSI('north')
@@ -86,6 +89,12 @@ def mapview(request):
 	psi_west = getPSI('west')
 	psi_central = getPSI('central')
 	weather = getWeather()
+
+	data = []
+	for incident in Incident.objects.all():
+		if(incident.lat!=None and incident.long!=None):
+			data.append({"lat":incident.lat, "lng":incident.long})
+	json_data = json.dumps(data)
 
 	context = {
         'psi_north': psi_north,
@@ -98,6 +107,7 @@ def mapview(request):
         'weather_east': weather['East'],
         'weather_west': weather['West'],
 		'weather_central': weather['Central'],
+		'data': json_data,
     }
 
     # Render the HTML template cms/view-map.html with the data in the context variable
