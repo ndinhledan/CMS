@@ -1,45 +1,45 @@
+{% include "cms/navbar.html" %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>CMS Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 700px;
-        width: 800px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 1.344, lng: 103.839},
-          zoom: 11
-        });
+    <head>
+        <title>View Emergency Map</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{%static 'cms/css/map.css' %}">
+        
 
-      // add marker for each region
-      addMarker({lat:1.442, lng:103.823});//north
-      addMarker({lat:1.338, lng:103.695});//west
-      addMarker({lat:1.344, lng:103.813});//central
-      addMarker({lat:1.354, lng:103.941});//east
-      addMarker({lat:1.265, lng:103.818});//south
-      }
+         <br></br>
+         <h1> <u>Map of Incident</u> </h1>
 
-      // function to add marker to map
-      function addMarker(lat_lng){
-        var marker = new google.maps.Marker({
-          position: lat_lng,
-          map:map,
-        });
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwnOKdHVcbd77ol8nQu81CPgr3CnjBfMc&callback=initMap"
-    async defer></script>
-  </body>
+    </head>
+    <body>
+
+        <div id="map"></div>
+        <div> <p> Filter map by: </p> </div>
+        <div class="sidebarmap">
+            <ul>
+              Reported Incidents <input id="incidentCheckbox" type="checkbox" onclick="toggleGroup('incidents')" checked="checked" />
+              Weather <input id="weatherCheckbox" type="checkbox" onclick="toggleGroup('weather')" checked="checked" />
+              PSI <input id="psiCheckbox" type="checkbox" onclick="toggleGroup('psi')" checked="checked" />
+            </ul>
+        </div>
+        <br></br>
+
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwnOKdHVcbd77ol8nQu81CPgr3CnjBfMc"></script>
+        <script type="text/javascript" src ="{% static 'cms/js/map.js' %}"></script>
+        <script>
+            var psi_north = "{{ psi_north }}";
+            var psi_south = "{{ psi_south}}";
+            var psi_east = "{{ psi_east }}";
+            var psi_west = "{{ psi_west }}";
+            var psi_central = "{{ psi_central }}";
+            var weather_north =  "{{ weather_north }}";
+            var weather_south =  "{{ weather_south }}";
+            var weather_east =  "{{ weather_east }}";
+            var weather_west =  "{{ weather_west }}";
+            var weather_central =  "{{ weather_central }}";
+            var locations = {{ data|safe }};
+        </script>
+    </body>
 </html>
