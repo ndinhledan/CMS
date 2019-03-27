@@ -1,0 +1,281 @@
+{% include "cms/nav bar.html" %}
+{% block content %}
+{% load tz %}
+{% load static %}
+<html>
+<head>
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+		
+		<style>
+			table {
+				position: absolute;
+				top: 50%;
+				text-align: center;
+		
+			}
+			.btn {padding: 4px;}
+		
+			input[type=text] {
+				position: relative;
+				top: 14%;
+				left: 3%;
+			}
+		
+			.by {
+				font-size: 29px;
+				position: relative;
+				text-align: center;
+				margin-top: 6%;
+		
+			}
+		
+			.dropdown {
+				position: relative;
+				margin-top: 5%;
+				right: 10px;
+			}
+		
+			input[type=date]
+			{
+				background-color: #6C757D;
+				border-radius: 5px;
+				color: #FFFFFF;
+				height: 35.5px;
+				position: relative;
+				margin-top: 9px;
+				font-size: 17px;
+				right: 110px;
+			}
+		
+			input[type=date]::-webkit-inner-spin-button {display: none;}
+			input[type=date]::-webkit-calendar-picker-indicator {
+				background-color: #6C757D;
+			}
+		
+			#search {
+				position: relative;
+				margin-top: 9px;
+				height: 32px;
+				padding: 4px;
+				right: 150px;
+				width: 200px;
+			}
+		
+			#severity-menu, #assistance-menu{
+				visibility: hidden;
+				border: 1px solid;
+				border-color: #D1D1D1;
+				background-color: #FFFFFF;
+				position: relative;
+				left: 68%;
+				top: 1px;
+			}
+		
+			#severity-menu a {
+				margin-right: 35px;
+				color: #000000;
+			}
+		
+			#severity-menu li {
+				padding: 5px;
+			}
+		
+			#assistance-menu {
+				visibility: hidden;
+				border: 1px solid;
+				border-color: #D1D1D1;
+				
+			}
+		
+			#assistance-menu a {
+				color: #000000;
+				margin-right: 35px;
+			}
+		
+			
+		</style>
+
+
+
+<body>
+	<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+	<form action="{% url 'cms:create-incident' %}">
+		<div class="row">
+			<div class = "col-md-6">
+				<input type="text" class="form-control" placeholder="Please enter your search query here">
+			</div>
+			<div class="col-md-1"></div>
+			<div class = "col-md-2">
+				<div class="dropdown">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Categories
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					  <a class="dropdown-item" href="#" id="severity" onmouseover="display()" onmouseout="displaynone()">Severity</a>
+					  <a class="dropdown-item" href="#" onmouseover="display1()" onmouseout="displaynone1()">Type of Assistance Required</a>
+					</div>
+				  </div>
+			</div>
+
+			<div class="col-md-2">
+				<input type="date" class="datepicker">
+			</div>
+
+			<div class="col-md-1">
+				<button type="submit" class="btn btn-secondary" id="search">Search</button>
+			</div>
+
+
+		</div>
+
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div id="severity-menu" class="float-right" onmouseover="display()" onmouseout="displaynone()">
+				<ul class="items" style="list-style-type: none; text-align: center; list-style-position: inside;">
+					<li><a class="submenu" href="#">1</a></li>
+					<li><a class="submenu" href="#">2</a></li>
+					<li><a class="submenu" href="#">3</a></li>
+					<li><a class="submenu" href="#">4</a></li>
+					<li><a class="submenu" href="#">5</a></li>
+				</ul>
+			</div>
+
+
+			<div id="assistance-menu" onmouseover="display1()" onmouseout="displaynone1()" class="float-right">
+				<ul class="items1" style="list-style-type: none; text-align: center; list-style-position: inside;">
+					<li><a class="submenu1" href="#">Rescue & Evaluation</a></li>
+					<li><a class="submenu1" href="#">Fire Fighting</a></li>
+					<li><a class="submenu1" href="#">Gas Leak Control</a></li>
+					<li><a class="submenu1" href="#">Emergency Ambulance</a></li>
+				</ul> 
+			</div>
+			
+		</div>
+
+			<!--<button type="submit">Submit Case</button>-->
+	</form>
+
+	{% if incident_list %}
+
+		<table class = "table table-bordered table-hover" id="maintable">
+			<thead class="thead-light">
+				<tr>
+					<th scope="col" onclick="sort(0)">Case ID</th>
+					<th scope="col">Type of Assistance Required</th>
+					<th scope="col" onclick="sort(2)">Level of Security</th>
+					<th scope="col" onclick="sort(3)">Date</th>
+					<th scope="col" onclick="sort(4)">Time</th>
+					<th scope="col">Location</th>
+					<th scope="col">Tools</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			{% for incident in incident_list %}
+			<tr id = "rowid">
+				<td>{{ incident.id }}</td>
+				<td>{{ incident.assistance_type }}</td>
+				<td>{{ incident.severity }}</td>
+				{% timezone "Asia/Singapore" %}
+				<td>{{ incident.incident_date|date:"d M Y" }}</td>
+				<td>{{ incident.incident_date|date:"H:i:s"}}</td>
+				{% endtimezone %}
+				<td>{{incident.location}}</td>
+				<td style="text-align: center;">
+					<button class= case-detail btn data-id="{% url 'cms:case' incident.pk %}" ><i class="fas fa-eye"  ></i></button>
+
+					<button class="btn"></i><i class="far fa-edit"></i></button>
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+
+
+
+	{% else %}
+		<p>No incidents are available.</p>
+	{% endif %}
+
+	<p id = "para"></p>
+
+	{% endblock %}
+	</div>
+</body>
+
+
+<script>
+	$(".case-detail").each(function () {
+      $(this).modalForm({formURL: $(this).data('id')});
+    });
+
+	function display(){
+		document.getElementById("severity-menu").style.visibility = "visible";
+	}	
+	function display1() {
+		document.getElementById("assistance-menu").style.visibility = "visible";
+	}
+
+	function displaynone() {
+		document.getElementById("severity-menu").style.visibility = "hidden";
+	}
+
+	function displaynone1() {
+		document.getElementById("assistance-menu").style.visibility = "hidden";
+	}
+
+	function sort(n){
+		table = document.getElementById("maintable");
+		rows = table.rows.length;
+		switching = true;
+		direction = "ascending";
+
+
+		for (i=1; i < rows; i++)
+		{
+			for (j=1; j < rows-i; j++)
+			{
+				x = table.rows[j].cells[n].innerHTML;
+				y = table.rows[j+1].cells[n].innerHTML;
+
+				if (x > y)
+				{
+					row = table.insertRow(j);
+					for (k=0; k < 7; k++)
+					{
+						cell = row.insertCell(k);
+						cell.innerHTML = table.rows[j+2].cells[k].innerHTML;
+					}
+					document.getElementById("maintable").deleteRow(j+2);
+				}
+
+			}
+		}
+
+
+		/*if (shouldSwitch)
+		{
+			row = table.insertRow(i);
+			for (j=0; j < 7; j++)
+			{
+				cell = row.insertCell(j);
+				cell.innerHTML = table.rows[i+2].cells[j].innerHTML;
+			}
+			document.getElementById("maintable").deleteRow(i+2);
+		}*/
+
+	}
+
+
+</script>
+</html>

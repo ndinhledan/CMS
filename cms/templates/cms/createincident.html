@@ -1,7 +1,89 @@
-<h2>Add New Case</h2>
+{% include "cms/nav bar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+{% load widget_tweaks %}
 
-<form method="post" action="{% url 'cms:create-incident' %}">
-	{%csrf_token%}
-	{{ form.as_p }}
-	<button type="submit" name="Submit Case">Submit Case</button>
-</form>
+
+<head>
+  {% load staticfiles %}
+</head>
+
+<body>
+  <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+</body>
+
+
+<div class="container">
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+  <h2>Add New Case</h2>
+  <br>
+  <form method="post" action="/cms/create-incident/">
+  	{% csrf_token %}
+  	{% for hidden_field in form.hidden_fields %}
+		{{ hidden_field }}
+		{% endfor %}
+
+		{% if form.non_field_errors %}
+		<div class="alert alert-danger" role="alert">
+			{% for error in form.non_field_errors %}
+			{{ error }}
+			{% endfor %}
+		</div>
+		{% endif %}
+	    <div class="form-row">
+	      <div class="col">
+	        {% for hidden_field in form.hidden_fields %}
+	        {{ hidden_field }}
+	        {% endfor %}
+	        {{ form.incident_type.label_tag }}
+	        {% render_field form.incident_type class="form-control" %}
+	      </div>
+	      <div class="col">
+	        {{ form.assistance_type.label_tag }}
+	        {% render_field form.assistance_type class="form-control" %}
+	      </div>
+	      <div class="col">
+	        {{ form.severity.label_tag }}
+	        {% render_field form.severity class="form-control" %}
+	      </div>
+	      <div class="col">
+	        {{ form.caller.label_tag }}
+	        {% render_field form.caller class="form-control" %}
+	      </div>
+	    </div>
+	    <br>
+	    <div>
+	      {% render_field form.street_name class="form-control mr-2" %}
+	    </div>
+	    <br>
+	    <div class="form-row">
+	      <div class="col">
+	        {% render_field form.apartment_number class="form-control mr-2" %}
+	      </div>
+	      <div class="col">
+	        {% render_field form.postal_code class="form-control mr-2" %}
+	      </div>
+	    </div>
+	    <br>
+
+	    <div>
+	      <p class="text-left">
+	        <button class="btn btn-primary" type="submit"  name="Submit Case">Submit Case</button>
+	      </p>
+	    </div>
+
+
+  </form>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+        $("#id_postal_code").attr('placeholder', '{{form.postal_code.label}}');
+        $("#id_street_name").attr('placeholder', '{{form.street_name.label}}');
+        $("#id_apartment_number").attr('placeholder', '{{form.apartment_number.label}}');
+    });
+</script>
