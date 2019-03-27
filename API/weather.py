@@ -1,12 +1,12 @@
 import requests
 import json
-from datetime import date
+from datetime import datetime
 
 """Returns the 24 hr PSI"""
 def getPSI(region):
 
-    current_date = str(date.today())
-    url = 'https://api.data.gov.sg/v1/environment/psi?date=' + current_date
+    current_datetime = str(datetime.now().isoformat(timespec='seconds'))
+    url = 'https://api.data.gov.sg/v1/environment/psi?date_time=' + current_datetime
 
     result = requests.get(url)
     try:
@@ -21,8 +21,8 @@ def getPSI(region):
 """Returns the weather forecast for all regions"""
 def getWeather():
 
-    current_date = str(date.today())
-    url = 'https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?date=' + current_date
+    current_datetime = str(datetime.now().isoformat(timespec='seconds'))
+    url = 'https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?date_time=' + current_datetime
 
     result = requests.get(url)
     try:
