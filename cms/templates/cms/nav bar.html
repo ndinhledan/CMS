@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Crisis Management System</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}" type='text/css' />
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<style>
+	.close {
+		color: #FFFFFF;
+		position: absolute;
+		bottom: 5px;
+		font-size: 25px;
+		margin-left: 45%;
+	}
+
+	.close:hover {
+		color: white;
+	}
+
+	.sidenav {
+		height: 100%;
+		width: 0;
+		position: fixed;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		background-color: #111;
+		overflow-x: hidden;
+		transition: 0.5s;
+		padding-top: 60px;
+	}
+
+	.sidenav a {
+		text-decoration: none;
+		position: relative;
+		font-size: 25px;
+		color: #A3A3A3;
+		display: block;
+		transition: 0.3s;
+		top: -30px;
+		border-bottom: 1px solid;
+		border-bottom-color: #50514F;
+		padding: 10px;
+	}
+
+	.sidenav a:hover {
+		color: #FFFFFF;
+	}
+
+	@media screen and (max-height: 450px) {
+		.sidenav {
+			padding-top: 15px;
+		}
+
+		.sidenav a {
+			font-size: 18px;
+		}
+	}
+
+	h4 {
+		color: #FFFFFF;
+		position: relative;
+		bottom: 55px;
+		text-align: left;
+		border-bottom: 1px solid;
+		border-bottom-color: #50514F;
+		/*top right bottom left*/
+		padding: 10px 10px 10px 3px;
+		font-size: 33px;
+	}
+
+	.dummy {
+		max-height: 0%;
+		position: relative;
+		top: -30px;
+	}
+
+	img {
+		width: 50px;
+		float: left;
+		position: relative;
+		right: 550px;
+	}
+
+	nav a {
+		color: white;
+		font-size: 20px;
+		padding: 0px;
+	}
+
+	nav a:hover {
+		color: #A3A3A3;
+	}
+</style>
+</head>
+
+<body>
+
+	<!--links-->
+	<div id="sidenavid" class="sidenav">
+		<h4>Navigation</h4>
+		<!---comment-->
+		<div class="dummy">
+			<a href="#">View all closed cases</a>
+			<a href="#">View all active cases</a>
+		</div>
+		<button type="button" onclick="closeNav()" class="close" aria-label="close">
+			<i class="fas fa-arrow-left" style="color: white;"></i>
+		</button>
+
+	</div>
+
+	<!--navbar-->
+	<nav class="navbar navbar-dark bg-dark">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+			aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon" onclick="openNav()"></span>
+		</button>
+		<a class="navbar-brand" href="#">
+			<img src="{% static 'cms/logo white.png' %}">
+		</a>
+
+		<a href="#">Logout</a>
+	</nav>
+
+	<script>
+		function openNav() {
+			document.getElementById("sidenavid").style.width = "250px";
+		}
+
+		function closeNav() {
+			document.getElementById("sidenavid").style.width = "0px";
+		}
+	</script>
