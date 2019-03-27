@@ -12,4 +12,5 @@ urlpatterns =[
 	path('case/<int:pk>/', views.DetailCase.as_view(), name='case'),
 	path('order/by_<condition>', views.IndexView.as_view(), name='order'),
 	path('view-map/', views.MapView.as_view(), name='view-map'),
+        path('send-message/', views.MessageCreateView.as_view(), name = 'send_message'),
 ]

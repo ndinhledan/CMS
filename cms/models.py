@@ -10,7 +10,12 @@ class Assistance(models.Model):
 
 	def __str__(self):
 		return self.name
+	
+class Comment(models.Model):
+        Message = models.CharField(max_length = 200)
 
+        def __str__(self):
+                return self.Message
 class Incident(models.Model):
 	Fire = 'FIR'
 	Haze = 'HAZ'
