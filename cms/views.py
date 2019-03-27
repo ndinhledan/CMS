@@ -30,12 +30,12 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
-                     generic.CreateView):
+		     generic.CreateView):
 
-        template_name = 'cms/Message.html'
-        form_class = MessageForm
-        success_message = 'Success: Message was sent.'
-        success_url = reverse_lazy('cms:create-incident')
+	template_name = 'cms/Message.html'
+	form_class = MessageForm
+	success_message = 'Success: Message was sent.'
+	success_url = reverse_lazy('cms:create-incident')
 
 	
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -88,37 +88,38 @@ class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
 
 		return render(request, "cms/closed_confirm.html")
+class MapView(LoginRequiredMixin, generic.TemplateView):
+	template_name = 'cms/view-map.html'
 
-@login_required
-def mapview(request):
+	@login_required
+	def mapview(request):
 
-	psi_north = getPSI('north')
-	psi_south = getPSI('south')
-	psi_east = getPSI('east')
-	psi_west = getPSI('west')
-	psi_central = getPSI('central')
-	weather = getWeather()
+		psi_north = getPSI('north')
+		psi_south = getPSI('south')
+		psi_east = getPSI('east')
+		psi_west = getPSI('west')
+		psi_central = getPSI('central')
+		weather = getWeather()
 
-	data = []
-	for incident in Incident.objects.all():
-		if(incident.lat!=None and incident.long!=None):
-			data.append({"lat":incident.lat, "lng":incident.long})
-	json_data = json.dumps(data)
+		data = []
+		for incident in Incident.objects.all():
+			if(incident.lat!=None and incident.long!=None):
+				data.append({"lat":incident.lat, "lng":incident.long})
+		json_data = json.dumps(data)
 
-	context = {
-        'psi_north': psi_north,
-        'psi_south': psi_south,
-        'psi_east': psi_east,
-        'psi_west': psi_west,
+		context = {
+		'psi_north': psi_north,
+		'psi_south': psi_south,
+		'psi_east': psi_east,
+		'psi_west': psi_west,
 
-		'psi_central': psi_central,
-		'weather_north': weather['North'],
-        'weather_south': weather['South'],
-        'weather_east': weather['East'],
-        'weather_west': weather['West'],
-		'weather_central': weather['Central'],
-		'data': json_data,
-    }
-
-    # Render the HTML template cms/view-map.html with the data in the context variable
-	return render(request, 'cms/view-map.html', context=context)
+			'psi_central': psi_central,
+			'weather_north': weather['North'],
+		'weather_south': weather['South'],
+		'weather_east': weather['East'],
+		'weather_west': weather['West'],
+			'weather_central': weather['Central'],
+			'data': json_data,
+		}
+		return render(request, 'cms/view-map.html', context=context)
+	# Render the HTML template cms/view-map.html with the data in the context variable

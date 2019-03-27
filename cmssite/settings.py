@@ -36,7 +36,6 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'django_filters',
-    'widget_tweaks',
     'cms.apps.CmsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
