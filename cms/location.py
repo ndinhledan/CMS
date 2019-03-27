@@ -1,15 +1,19 @@
 import requests
 
 """This class requires the requests library. Run 'pip install requests' """
+import json
 
+""" with open("cms/apikey.json") as file:
+    data = json.load(file)
 
+APIKEY = data["APIKEY_LOCATION"] """
 #APIKEY = 'test'
 
 """Returns a tuple (lat, long)"""
 def getCoordinates(zipcode):
 
     url = 'https://maps.googleapis.com/maps/api/geocode/json'
-    APIKEY = "AIzaSyARJzI7g8mafjZYgR_v3jt5tI-ohyt8Q2s"
+    APIKEY = "AIzaSyAwnOKdHVcbd77ol8nQu81CPgr3CnjBfMc"
 
     params = {'address':zipcode, 'components':'country:SG', 'key':APIKEY}
 
@@ -25,4 +29,5 @@ def getCoordinates(zipcode):
         long = 103.891234
     return (lat, long)
 
-print(getCoordinates(680351))
+#print(getCoordinates(680351))
+

@@ -25,6 +25,9 @@ from .forms import IncidentForm, MessageForm
 from .location import getCoordinates
 from .filters import IncidentFilter
 from cms.TelegramBotAPI import tele
+from API.weather import getPSI, getWeather
+import json
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class MessageCreateView(LoginRequiredMixin, generic.TemplateView):
@@ -54,6 +57,7 @@ class MessageCreateView(LoginRequiredMixin, generic.TemplateView):
 class SuccessSMSView(TemplateView):
 
         template_name = 'cms/success_sms.html'
+
 
 class IndexView(LoginRequiredMixin, generic.ListView):
         model = Incident
@@ -108,4 +112,37 @@ class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
                 return render(request, "cms/closed_confirm.html")
 
 class MapView(LoginRequiredMixin, generic.TemplateView):
-        template_name = 'cms/view-map.html'
+	template_name = 'cms/view-map.html'
+
+	@login_required
+	def get(request):
+
+		psi_north = getPSI('north')
+		psi_south = getPSI('south')
+		psi_east = getPSI('east')
+		psi_west = getPSI('west')
+		psi_central = getPSI('central')
+		weather = getWeather()
+
+		data = []
+		for incident in Incident.objects.all():
+			if(incident.lat!=None and incident.long!=None):
+				data.append({"lat":incident.lat, "lng":incident.long})
+		json_data = json.dumps(data)
+
+		context = {
+		'psi_north': psi_north,
+		'psi_south': psi_south,
+		'psi_east': psi_east,
+		'psi_west': psi_west,
+
+			'psi_central': psi_central,
+			'weather_north': weather['North'],
+		'weather_south': weather['South'],
+		'weather_east': weather['East'],
+		'weather_west': weather['West'],
+			'weather_central': weather['Central'],
+			'data': json_data,
+		}
+		return render(request, 'cms/view-map.html', context=context)
+	# Render the HTML template cms/view-map.html with the data in the context variable

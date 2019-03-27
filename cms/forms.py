@@ -23,3 +23,4 @@ class MessageForm(PopRequestMixin, CreateUpdateAjaxMixin,forms.ModelForm):
         class Meta:
                 model = Incident
                 fields = ('message',)
+

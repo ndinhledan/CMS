@@ -1,5 +1,17 @@
 {% include "cms/nav bar.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker(
+		);
+});
+</script>
+
+<link rel="stylesheet" type="text/css" href="{%static 'cms/style.css' %}">
 {% load tz %}
 {% load static %}
 <html>
@@ -263,19 +275,36 @@
 		}
 
 
-		/*if (shouldSwitch)
-		{
-			row = table.insertRow(i);
-			for (j=0; j < 7; j++)
-			{
-				cell = row.insertCell(j);
-				cell.innerHTML = table.rows[i+2].cells[j].innerHTML;
-			}
-			document.getElementById("maintable").deleteRow(i+2);
-		}*/
-
-	}
-
-
 </script>
+	<table>
+		<tr>
+			<th>Case ID</th>
+			<th>Type of Assistance Required</th>
+			<th>Level of Security</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Location</th>
+		</tr>
+		{% for incident in filter.qs %}
+		<tr>
+			<td> <a href="{% url 'cms:case' incident.id %}">{{ incident.id }}</a></td>
+			<td>{{ incident.assistance_type }}</td>
+			<td>{{ incident.severity }}</td>
+			{% timezone "Asia/Singapore" %}
+			<td>{{ incident.incident_date|date:"d M Y" }}</td>
+			<td>{{ incident.incident_date|date:"H:i:s"}}</td>
+			{% endtimezone %}
+			<td>{{incident.location}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	</ul>
+{% else %}
+	<p>No incidents are available.</p>
+{% endif %}
+
+
+<form action="{% url 'cms:create-incident' %}">
+	<button type="submit">Submit Case</button>
+</form>
 </html>

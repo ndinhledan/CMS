@@ -32,7 +32,8 @@ class Incident(models.Model):
 		(Aftershock, 'Earthquake Aftershock'),
 		(Terrorist, 'Terrorist Activity')
 	)
-
+	id = models.AutoField(primary_key=True)
+	
 	submitter = models.ForeignKey(
 		User,
 		on_delete=models.CASCADE,
@@ -53,7 +54,7 @@ class Incident(models.Model):
 
 	incident_date = models.DateTimeField('date incident happens',
 											auto_now_add=True)
-	
+
 	assistance_type = models.ForeignKey(
 		Assistance,
 		on_delete=models.CASCADE)
@@ -78,5 +79,3 @@ class Incident(models.Model):
 
 	class Meta:
 		ordering = ["-incident_date"]
-
-
