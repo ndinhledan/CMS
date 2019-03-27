@@ -12,7 +12,7 @@ class Assistance(models.Model):
 		return self.name
 	
 class Comment(models.Model):
-        Message = models.CharField(max_length = 200)
+        Message = models.CharField(max_length = 200, default = "Run")
 
         def __str__(self):
                 return self.Message
@@ -42,6 +42,10 @@ class Incident(models.Model):
 	caller = models.CharField(
 		max_length=50,
 		default='Anonymous')
+
+	message = models.CharField(
+		max_length=100,
+		default='All is good')
 
 	incident_type = models.CharField(
 		max_length=3,

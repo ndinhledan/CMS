@@ -7,7 +7,7 @@ closed by
 '''
 
 
-
+from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -27,17 +27,38 @@ from .filters import IncidentFilter
 from API.weather import getPSI, getWeather
 import json
 from django.contrib.auth.decorators import login_required
+from cms.TelegramBotAPI import tele
 # Create your views here.
 
 class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
 		     generic.CreateView):
 
 	template_name = 'cms/Message.html'
-	form_class = MessageForm
-	success_message = 'Success: Message was sent.'
-	success_url = reverse_lazy('cms:create-incident')
+	def get(self, request, pk):
+		form = MessageForm()
+		return render(request, self.template_name, {'form': form})
 
-	
+	def post(self, request,pk):
+		form = MessageForm(request.POST)
+		obj = Incident.objects.get(pk=pk)
+		print("form")
+		if form.is_valid():
+			print("valid")
+			Message = form.cleaned_data['message']
+			obj.is_message = Message
+			postal_code = obj.location[-6:]
+			print(postal_code)
+			print(Message)
+			obj.save()
+			tele(postal_code,Message)
+			return render(request,'cms/success_social_media.html')
+		print("invalid")
+		return render(request, self.template_name, {'form': form})
+
+class SuccessSMSView(TemplateView):
+
+	template_name = 'cms/success_sms.html'	
+
 class IndexView(LoginRequiredMixin, generic.ListView):
 	model = Incident
 
@@ -79,47 +100,45 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
 	template_name = 'cms/detail_case.html'
 	model = Incident
-
+	print("form")
 	def post(self, request, pk):
+		print("valid")
 		self.object = self.get_object()
 		self.object.is_closed = True
 		self.object.incident_closed_date = timezone.now()
 		self.object.save()
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
-
 		return render(request, "cms/closed_confirm.html")
-class MapView(LoginRequiredMixin, generic.TemplateView):
-	template_name = 'cms/view-map.html'
+	print("invalid")
 
-	@login_required
-	def mapview(request):
+@login_required
+def mapview(request):
 
-		psi_north = getPSI('north')
-		psi_south = getPSI('south')
-		psi_east = getPSI('east')
-		psi_west = getPSI('west')
-		psi_central = getPSI('central')
-		weather = getWeather()
+	psi_north = getPSI('north')
+	psi_south = getPSI('south')
+	psi_east = getPSI('east')
+	psi_west = getPSI('west')
+	psi_central = getPSI('central')
+	weather = getWeather()
 
-		data = []
-		for incident in Incident.objects.all():
-			if(incident.lat!=None and incident.long!=None):
-				data.append({"lat":incident.lat, "lng":incident.long})
-		json_data = json.dumps(data)
+	data = []
+	for incident in Incident.objects.all():
+		if(incident.lat!=None and incident.long!=None):
+			data.append({"lat":incident.lat, "lng":incident.long})
+	json_data = json.dumps(data)
 
-		context = {
+	context = {
 		'psi_north': psi_north,
 		'psi_south': psi_south,
 		'psi_east': psi_east,
 		'psi_west': psi_west,
-
-			'psi_central': psi_central,
-			'weather_north': weather['North'],
+		'psi_central': psi_central,
+		'weather_north': weather['North'],
 		'weather_south': weather['South'],
 		'weather_east': weather['East'],
 		'weather_west': weather['West'],
-			'weather_central': weather['Central'],
-			'data': json_data,
-		}
-		return render(request, 'cms/view-map.html', context=context)
-	# Render the HTML template cms/view-map.html with the data in the context variable
+		'weather_central': weather['Central'],
+		'data': json_data,
+	}
+	
+	return render(request, 'cms/view-map.html', context=context)
