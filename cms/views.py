@@ -24,6 +24,9 @@ from .models import Incident
 from .forms import IncidentForm, MessageForm
 from .location import getCoordinates
 from .filters import IncidentFilter
+from API.weather import getPSI, getWeather
+import json
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
@@ -86,10 +89,6 @@ class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
 
 		return render(request, "cms/closed_confirm.html")
 
-from API.weather import getPSI, getWeather
-import json
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def mapview(request):
 
@@ -111,6 +110,7 @@ def mapview(request):
         'psi_south': psi_south,
         'psi_east': psi_east,
         'psi_west': psi_west,
+
 		'psi_central': psi_central,
 		'weather_north': weather['North'],
         'weather_south': weather['South'],

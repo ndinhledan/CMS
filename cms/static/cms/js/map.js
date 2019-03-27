@@ -20,6 +20,7 @@ $(function () {
             scrollwheel: false,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
+
         map = new google.maps.Map(mapCanvas, mapOptions);
 
         //var markerImage = new Image();
