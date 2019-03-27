@@ -78,7 +78,6 @@
 	    </div>
 
 
-
   </form>
 </div>
 <script type="text/javascript">
@@ -87,11 +86,4 @@
         $("#id_street_name").attr('placeholder', '{{form.street_name.label}}');
         $("#id_apartment_number").attr('placeholder', '{{form.apartment_number.label}}');
     });
-  $(function () {
-
-    $(".create-book").modalForm({
-      formURL: "{% url 'cms:send_message' %}"
-    });
-
-  });
 </script>

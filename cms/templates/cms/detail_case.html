@@ -45,10 +45,10 @@
 		</ul>
 		{% if user.is_staff %}
 		<div  id = "button" class="btn-toolbar">
-		<form method="post">
+		<form method= "post" >
 			{% csrf_token %}
 			<div class = "btn-group mr-2">
-			<button type="submit" class ="submit-btn btn btn-primary" onclick= "return confirm('Are you sure?');" >Close case</button>
+				<button type="submit" class ="submit-btn btn-primary" onclick= "return confirm('Are you sure?');" >Close case</button>
 			</div>
 		</form>
 				<div class = "btn-group mr-2">

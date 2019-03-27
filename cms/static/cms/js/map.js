@@ -2,7 +2,7 @@ var markerType = {
     "incidents": [],
     "weather": [],
     "psi": []
-  };
+};
 
 var map;
 
@@ -34,64 +34,64 @@ $(function () {
 
     google.maps.event.addDomListener(window, 'load', initMap);
 
-    setInterval(function() {
+    setInterval(function () {
         window.location.reload(true);
-    }, 5*60*1000);
-    
-    function loadMarkers(){
-        for (var i = 0; i < locations.length; i++) { 
+    }, 5 * 60 * 1000);
+
+    function loadMarkers() {
+        for (var i = 0; i < locations.length; i++) {
             addMarker(locations[i]);
         }
 
-        addInfoWindow({lat:1.46981, lng:103.817}, "psi", "PSI: ", psi_north, 40, 0);//north
-        addInfoWindow({lat:1.35735, lng:103.695}, "psi", "PSI: ", psi_west, -150, 50);//west
-        addInfoWindow({lat:1.35735, lng:103.821}, "psi", "PSI: ", psi_central, 0, 50);//central
-        addInfoWindow({lat:1.35735, lng:103.941}, "psi", "PSI: ", psi_east, 180, 50);//east
-        addInfoWindow({lat:1.24082, lng:103.828}, "psi", "PSI: ", psi_south, 50, 85);//south
-        addInfoWindow({lat:1.46981, lng:103.817}, "weather", "Weather: ", weather_north, -50, 0);//north
-        addInfoWindow({lat:1.35735, lng:103.695}, "weather", "Weather: ", weather_west, -150, 0);//west
-        addInfoWindow({lat:1.35735, lng:103.821}, "weather", "Weather: ", weather_central, 0, 10);//central
-        addInfoWindow({lat:1.35735, lng:103.941}, "weather", "Weather: ", weather_east, 180, 0);//east
-        addInfoWindow({lat:1.24082, lng:103.828}, "weather", "Weather: ", weather_south, -50, 85);//south
+        addInfoWindow({ lat: 1.46981, lng: 103.817 }, "psi", "PSI: ", psi_north, 40, 0);//north
+        addInfoWindow({ lat: 1.35735, lng: 103.695 }, "psi", "PSI: ", psi_west, -150, 50);//west
+        addInfoWindow({ lat: 1.35735, lng: 103.821 }, "psi", "PSI: ", psi_central, 0, 50);//central
+        addInfoWindow({ lat: 1.35735, lng: 103.941 }, "psi", "PSI: ", psi_east, 180, 50);//east
+        addInfoWindow({ lat: 1.24082, lng: 103.828 }, "psi", "PSI: ", psi_south, 50, 85);//south
+        addInfoWindow({ lat: 1.46981, lng: 103.817 }, "weather", "Weather: ", weather_north, -50, 0);//north
+        addInfoWindow({ lat: 1.35735, lng: 103.695 }, "weather", "Weather: ", weather_west, -150, 0);//west
+        addInfoWindow({ lat: 1.35735, lng: 103.821 }, "weather", "Weather: ", weather_central, 0, 10);//central
+        addInfoWindow({ lat: 1.35735, lng: 103.941 }, "weather", "Weather: ", weather_east, 180, 0);//east
+        addInfoWindow({ lat: 1.24082, lng: 103.828 }, "weather", "Weather: ", weather_south, -50, 85);//south
     }
-    
-    function addInfoWindow(lat_lng, type, displayString, region, width, height){
+
+    function addInfoWindow(lat_lng, type, displayString, region, width, height) {
         var contentString = '<div class="info-window">' +
-                '<p>' + displayString + region + '</p>' +
-                '</div>'; 
+            '<p>' + displayString + region + '</p>' +
+            '</div>';
         var infowindow = new google.maps.InfoWindow({
             position: lat_lng,
             content: contentString,
             maxWidth: 160,
-            pixelOffset: new google.maps.Size(width,height),
+            pixelOffset: new google.maps.Size(width, height),
             opened: true
         });
         infowindow.open(map);
         markerType[type].push(infowindow);
     }
 
-    function addMarker(lat_lng){
+    function addMarker(lat_lng) {
         var marker = new google.maps.Marker({
-        position: lat_lng,
-        map:map,
-        type: "incidents",
+            position: lat_lng,
+            map: map,
+            type: "incidents",
         });
         markerType["incidents"].push(marker);
     }
 });
 
 function toggleGroup(type) {
-    if(type=="incidents"){
+    if (type == "incidents") {
         for (var i = 0; i < markerType[type].length; i++) {
             var marker = markerType[type][i];
             if (!marker.getVisible()) {
-              marker.setVisible(true);
+                marker.setVisible(true);
             } else {
-              marker.setVisible(false);
+                marker.setVisible(false);
             }
-          }
+        }
     }
-    else{
+    else {
         for (var i = 0; i < markerType[type].length; i++) {
             var infowindow = markerType[type][i];
             if (infowindow.opened) {
@@ -110,4 +110,4 @@ function toggleGroup(type) {
             }
         }
     }
-  }
+}

@@ -1,3 +1,4 @@
+{% include "cms/nav bar.html" %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,8 +9,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+         <br></br>
+         <h1> <u>Map of Incident</u> </h1>
+
+          <style>
+            h1{
+            text-align: center;  
+            font-size: 25px;  
+            }
+
+            body{
+            text-align: center;
+            background: cornsilk;
+            font-size: 25px;
+            }
+            
+            #map{
+                margin: 10px;
+                width: 99%;
+            }
+
+            #weatherCheckbox, #incidentCheckbox, #psiCheckbox{
+            margin: 10px;
+            }
+            
+         </style>
+
     </head>
     <body>
+
+        <div id="map"></div>
+        <div> <p> Filter map by: </p> </div>
         <div class="sidebarmap">
             <ul>
               Reported Incidents <input id="incidentCheckbox" type="checkbox" onclick="toggleGroup('incidents')" checked="checked" />
@@ -17,7 +50,7 @@
               PSI <input id="psiCheckbox" type="checkbox" onclick="toggleGroup('psi')" checked="checked" />
             </ul>
         </div>
-        <div id="map"></div>
+        <br></br>
 
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
