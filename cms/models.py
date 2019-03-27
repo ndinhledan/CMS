@@ -10,7 +10,12 @@ class Assistance(models.Model):
 
 	def __str__(self):
 		return self.name
+	
+class Comment(models.Model):
+        Message = models.CharField(max_length = 200)
 
+        def __str__(self):
+                return self.Message
 class Incident(models.Model):
 	Fire = 'FIR'
 	Haze = 'HAZ'
@@ -27,7 +32,8 @@ class Incident(models.Model):
 		(Aftershock, 'Earthquake Aftershock'),
 		(Terrorist, 'Terrorist Activity')
 	)
-
+	id = models.AutoField(primary_key=True)
+	
 	submitter = models.ForeignKey(
 		User,
 		on_delete=models.CASCADE,
@@ -44,7 +50,7 @@ class Incident(models.Model):
 
 	incident_date = models.DateTimeField('date incident happens',
 											auto_now_add=True)
-	
+
 	assistance_type = models.ForeignKey(
 		Assistance,
 		on_delete=models.CASCADE)
@@ -64,7 +70,8 @@ class Incident(models.Model):
 
 	incident_closed_date = models.DateTimeField(null=True)
 
+	lat = models.FloatField(null=True)
+	long = models.FloatField(null=True)
+
 	class Meta:
 		ordering = ["-incident_date"]
-
-

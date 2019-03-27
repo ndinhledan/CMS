@@ -25,4 +25,10 @@ Develope users and users groups with different privileges. Will work with both t
 ### 6. Package need:
 **Django widget tweaks**
 
-	pip install "django-widget-tweaks"
+	pip install django-widget-tweaks
+	
+Add ``"django-widget-tweaks"`` in INSTALLED_APPS IN settings.py
+
+**requests**
+
+	pip install requests

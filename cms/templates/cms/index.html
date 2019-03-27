@@ -1,27 +1,48 @@
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker(
+		);
+});
+</script>
+
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{%static 'cms/style.css' %}">
 {% load tz %}
-{% if messages %}
-    {% for message in messages %}
-    	{{ message }}
-    {% endfor %}
-{% endif %}
-<form action="{% url 'cms:create-incident' %}">
-	<button type="submit">Submit Case</button>
-</form>
 
+<form action="{% url 'cms:login' %}" align="right">
+	<button type="submit">Log out</button>
+</form>
 {% if incident_list %}
 	<h1>List of Incident</h1>
+	<button onclick="showFilter()">Filter</button>
+	<form style="display:none" id="filter" method="GET">
+		{{ filter.form }}
+		<button type= "submit" class="btn btn-primary">Select</button>
+	</form>
+	<script>
+		function showFilter(){
+			var filter = document.getElementById('filter');
+			if(filter.style.display === 'none'){
+				filter.style.display = 'block';
+			}
+			else{
+				filter.style.display = 'none';
+			}
+		}
+	</script>
 	<table>
 		<tr>
 			<th>Case ID</th>
 			<th>Type of Assistance Required</th>
-			<th></a> Level of Security</th>
+			<th>Level of Security</th>
 			<th>Date</th>
 			<th>Time</th>
 			<th>Location</th>
 		</tr>
-		{% for incident in incident_list %}
+		{% for incident in filter.qs %}
 		<tr>
 			<td> <a href="{% url 'cms:case' incident.id %}">{{ incident.id }}</a></td>
 			<td>{{ incident.assistance_type }}</td>
@@ -38,3 +59,8 @@
 {% else %}
 	<p>No incidents are available.</p>
 {% endif %}
+
+
+<form action="{% url 'cms:create-incident' %}">
+	<button type="submit">Submit Case</button>
+</form>

@@ -26,14 +26,17 @@ SECRET_KEY = '5#8^=tn^zgo=nl1u#hn9p5f0e@6fu#al=%@b^z@157h5m!!4jj'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+                'localhost',
                 '127.0.0.1',
-                'soft-donkey-92.localtunnel.me',
+                '0.0.0.0',
                 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_filters',
+    'widget_tweaks',
     'cms.apps.CmsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
