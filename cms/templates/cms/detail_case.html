@@ -1,35 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Hello World</title>
-</head>
+<div class="modal-header">
+    <h5 class="modal-title">Case detail</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 <body>
-	<h1>Case detail</h1>
-		Case ID: {{ incident.id }} 
-		<br>
-		Type of assistance required: {{ incident.get_incident_type_display }}
-		<br>
-		Level of Severity: {{ incident.severity }}
-		<br>
-		Reported date: {{ incident.incident_date|date:"d M Y" }}
-		<br>
-		Reported time: {{ incident.incident_date|date:"H:i:s" }}
-		<br>
-		Address: {{ incident.location }}
-		<br>
-		Name of Caller: {{ incident.caller }}
-		<br>
-		Submitted by: {{ incident.submitter.username }}
+	<div  class="modal-body">
+		<div id = "detail" >
+		<ul class ="list-group mb-5">
+			<li class = "list-group-item">
+			Case ID: {{ incident.id }} 
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Type of assistance required: {{ incident.get_incident_type_display }}
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Level of Severity: {{ incident.severity }}
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Reported date: {{ incident.incident_date|date:"d M Y" }}
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Reported time: {{ incident.incident_date|date:"H:i:s" }}
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Address: {{ incident.location }}
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Name of Caller: {{ incident.caller }}
+			</li>
+			<br>
+			<li class = "list-group-item">
+			Submitted by: {{ incident.submitter.username }}
+			</li>
+			<div class="modal-footer">
+		</ul>
 		{% if user.is_staff %}
+		<div  id = "button" class="btn-toolbar">
 		<form method="post">
 			{% csrf_token %}
-			<button type="submit" onclick="return confirm('Are you sure?');">Close case</button>
+			<div class = "btn-group mr-2">
+			<button type="submit" class ="submit-btn btn btn-primary" onclick= "return confirm('Are you sure?');" >Close case</button>
+			</div>
 		</form>
 		{% endif %}
-		<form action="javascript:history.go(-1)">
-			<button type="submit">Go Back</button>
-		</form>
-		<br>		
+			<div class = "btn-group mr-2">
+			<a href="{% url 'cms:home' %}" class = "btn btn-secondary" role="button" >Go Back</a>
+			</div>
+		</div>
+	</div>
+	</div>		
 
 </body>
 </html>
