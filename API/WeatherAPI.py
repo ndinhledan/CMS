@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
     I copied instructions from:
     https://stackoverflow.com/questions/48654427/hide-command-prompt-in-selenium-chromedriver """
 
-path = r'C:/Users/Owner/AppData/Local/Programs/Python/chromedriver_win32/chromedriver.exe'
+path = r'chromedriver.exe'
 options = Options()
 options.headless = True
 args = ['hide_console']
@@ -58,10 +58,10 @@ def weather(time,location):
             return result
 
 """ example of functions """
-all_psi()
-psi_north = psi('ContentPlaceHolderTicker_C049_LitValueNorth')
-weather_north = weather('morn','north-{day}')
-print('(NORTH)Weather is '+weather_north+ ' and PSI is '+psi_north)
+#all_psi()
+#psi_north = psi('ContentPlaceHolderTicker_C049_LitValueNorth')
+#weather_north = weather('morn','north-{day}')
+#print('(NORTH)Weather is '+weather_north+ ' and PSI is '+psi_north)
 
 
 
