@@ -28,6 +28,7 @@ from API.weather import getPSI, getWeather
 import json
 from django.contrib.auth.decorators import login_required
 from cms.TelegramBotAPI import tele
+from cms.TwitterAPI import tweets
 # Create your views here.
 
 class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
@@ -41,18 +42,14 @@ class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
 	def post(self, request,pk):
 		form = MessageForm(request.POST)
 		obj = Incident.objects.get(pk=pk)
-		print("form")
 		if form.is_valid():
-			print("valid")
 			Message = form.cleaned_data['message']
 			obj.is_message = Message
 			postal_code = obj.location[-6:]
-			print(postal_code)
-			print(Message)
 			obj.save()
 			tele(postal_code,Message)
+			tweets(postal_code,Message)
 			return render(request,'cms/success_social_media.html')
-		print("invalid")
 		return render(request, self.template_name, {'form': form})
 
 class SuccessSMSView(TemplateView):
@@ -75,6 +72,23 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 		context['filter'] = IncidentFilter(self.request.GET,queryset=self.get_queryset())
 		return context
 
+class ClosedIndexView(LoginRequiredMixin, generic.ListView):
+	model = Incident
+
+	context_object_name = 'incident_list'
+	template_name = 'cms/closedindex.html'
+
+	conditions ={
+		"severity": "severity",
+		"date" : "incident_date__date"
+	}
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['filter'] = IncidentFilter(self.request.GET,queryset=self.get_queryset())
+		return context
+
+
 
 class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 	template_name = 'cms/createincident.html'
@@ -94,7 +108,7 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 			incident.submitter = request.user
 			incident.lat, incident.long = getCoordinates(int(form.cleaned_data['postal_code']))
 			incident.save()
-			return HttpResponseRedirect(reverse('cms:home'))
+			return HttpResponseRedirect(reverse('cms:success_sms'))
 		return render(request, self.template_name, {'form': form})
 
 class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):

@@ -10,7 +10,7 @@ $(function () {
 
     function initMap() {
 
-        var location = new google.maps.LatLng(1.35735, 103.821);
+        var location = new google.maps.LatLng(1.344, 103.839);
 
         var mapCanvas = document.getElementById('map');
         var mapOptions = {
@@ -82,40 +82,32 @@ $(function () {
 
 function toggleGroup(type) {
     if (type == "incidents") {
-        toggleMarkers(type);
-    }
-    else {
-        toggleWindows(type);
-    }
-}
-
-function toggleMarkers(type){
-    for (var i = 0; i < markerType[type].length; i++) {
-        var marker = markerType[type][i];
-        if (!marker.getVisible()) {
-            marker.setVisible(true);
-        } else {
-            marker.setVisible(false);
+        for (var i = 0; i < markerType[type].length; i++) {
+            var marker = markerType[type][i];
+            if (!marker.getVisible()) {
+                marker.setVisible(true);
+            } else {
+                marker.setVisible(false);
+            }
         }
     }
-}
-
-function toggleWindows(type){
-    for (var i = 0; i < markerType[type].length; i++) {
-        var infowindow = markerType[type][i];
-        if (infowindow.opened) {
-            var windownew = new google.maps.InfoWindow({
-                position: infowindow.position,
-                content: infowindow.content,
-                maxWidth: 160,
-                pixelOffset: infowindow.pixelOffset,
-                opened: false
-            });
-            infowindow.close();
-            markerType[type][i] = windownew;
-        } else {
-            infowindow.open(map);
-            infowindow.opened = true;
+    else {
+        for (var i = 0; i < markerType[type].length; i++) {
+            var infowindow = markerType[type][i];
+            if (infowindow.opened) {
+                var windownew = new google.maps.InfoWindow({
+                    position: infowindow.position,
+                    content: infowindow.content,
+                    maxWidth: 160,
+                    pixelOffset: infowindow.pixelOffset,
+                    opened: false
+                });
+                infowindow.close();
+                markerType[type][i] = windownew;
+            } else {
+                infowindow.open(map);
+                infowindow.opened = true;
+            }
         }
     }
 }

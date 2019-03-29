@@ -6,7 +6,7 @@ def Num_Of_Case():
     """ returns a tuple of open clases and close cases in the last 24 hours """
     """ change the path to ur own location """ 
 
-    conn = sqlite3.connect('db.sqlite3')
+    conn = sqlite3.connect('C:\\Users\\VMadmin\\Downloads\\CMS-FrontEndKKS\\CMS-FrontEndKKS\\db.sqlite3')
     c = conn.cursor()
     current_time = datetime.now().strftime('%Y-%m-%d %H')
     previous_time = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H')

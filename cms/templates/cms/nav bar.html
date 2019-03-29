@@ -5,12 +5,12 @@
 	<title>Crisis Management System</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" shrink-to-fit="no">
 	{% load staticfiles %}
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}" type='text/css' />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
 		crossorigin="anonymous"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
 		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
@@ -121,8 +121,10 @@
 			<h4>Navigation</h4>
 			<!---comment-->
 			<div class="dummy">
-				<a href="#">View all closed cases</a>
-				<a href="#">View all active cases</a>
+				<a href="{% url 'cms:closed' %}">View all closed cases</a>
+				<a href="{% url 'cms:home' %}">View all active cases</a>
+				<a href="{% url 'cms:view-map' %}">View map</a>
+				<a href="{% url 'cms:create-incident' %}">Submit Case</a>
 			</div>
 			<button type="button" onclick="closeNav()" class="close" aria-label="close">
 				<i class="fas fa-arrow-left" style="color: white;"></i>
@@ -143,12 +145,12 @@
 			<div class="col-md-9">
 
 				<a class="navbar-brand" href="#">
-					<img src="{% static 'cms/logo.png' %}" class="img-responsive center-block">
+					<img src="{% static 'cms/dfcg.png' %}" class="img-responsive center-block">
 				</a>
 			</div>
 
 			<div class="col-md-2">
-				<a href="#" style="float:right;">Logout</a>
+				<a href="{% url 'cms:login' %}" style="float:right;">Logout</a>
 			</div>
 		</nav>
 
