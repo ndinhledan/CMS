@@ -123,7 +123,7 @@ def mapview(request):
 
 	data = []
 	for incident in Incident.objects.all():
-		if(incident.lat!=None and incident.long!=None):
+		if(incident.is_closed==False and incident.lat!=None and incident.long!=None):
 			data.append({"lat":incident.lat, "lng":incident.long})
 	json_data = json.dumps(data)
 
