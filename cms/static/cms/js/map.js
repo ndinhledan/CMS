@@ -23,6 +23,11 @@ $(function () {
 
         map = new google.maps.Map(mapCanvas, mapOptions);
 
+        var ctaLayer = new google.maps.KmlLayer({
+            url: 'https://docs.google.com/uc?authuser=0&id=1oYdD6AYHFtw2xf9SJi0J2Z7jhMLui5mB',
+            map: map
+          });
+
         //var markerImage = new Image();
         //markerImage.src = 'marker.png';
 
