@@ -177,7 +177,7 @@
 			</thead>
 			{% for incident in filter.qs %}
 			<tbody>
-			{% if incident.is_closed == False %}
+			{% if incident.is_closed == True %}
 			<tr id = "rowid">
 				<td>{{ incident.id }}</td>
 				<td>{{ incident.assistance_type }}</td>

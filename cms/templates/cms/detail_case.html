@@ -44,6 +44,7 @@
 			<div class="modal-footer">
 		</ul>
 		{% if user.is_staff %}
+		{% if incident.is_closed == False %}
 		<div  id = "button" class="btn-toolbar">
 		<form method= "post" >
 			{% csrf_token %}
@@ -54,6 +55,7 @@
 				<div class = "btn-group mr-2">
 					<a href="{% url 'cms:send_message' incident.pk %}" class = "btn btn-success" role="button" >Send to Public</a>
 				</div>
+		{% endif %}		
 		{% endif %}
 			<div class = "btn-group mr-2">
 			<a href="{% url 'cms:home' %}" class = "btn btn-secondary" role="button" >Go Back</a>
