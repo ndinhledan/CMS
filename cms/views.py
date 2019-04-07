@@ -69,7 +69,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['filter'] = IncidentFilter(self.request.GET,queryset=self.get_queryset())
+		context['filter'] = IncidentFilter(self.request.GET,queryset=Incident.objects.filter(is_closed = False))
 		return context
 
 class ClosedIndexView(LoginRequiredMixin, generic.ListView):
@@ -85,7 +85,7 @@ class ClosedIndexView(LoginRequiredMixin, generic.ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['filter'] = IncidentFilter(self.request.GET,queryset=self.get_queryset())
+		context['filter'] = IncidentFilter(self.request.GET,queryset=Incident.objects.filter(is_closed = True))
 		return context
 
 
@@ -102,11 +102,11 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 		if form.is_valid():
 			incident = form.save(commit=False)
 
-			location = form.cleaned_data['street_name'] + " " + form.cleaned_data['apartment_number'] +" " + form.cleaned_data['postal_code']
+			location = form.cleaned_data['street_name'] + " " + form.cleaned_data['apartment_number'] +" " + form.data['postal_code']
 
 			incident.location = location
 			incident.submitter = request.user
-			incident.lat, incident.long = getCoordinates(int(form.cleaned_data['postal_code']))
+			incident.lat, incident.long = getCoordinates(int(form.data['postal_code']))
 			incident.save()
 			return HttpResponseRedirect(reverse('cms:success_sms'))
 		return render(request, self.template_name, {'form': form})
@@ -120,12 +120,12 @@ class DetailCase(PassRequestMixin, SuccessMessageMixin,generic.DetailView):
 		self.object = self.get_object()
 		self.object.is_closed = True
 		self.object.incident_closed_date = timezone.now()
-		self.object.save()
+		self.object.save()	
 		messages.info(request, "Case " + str(self.object.id) + " has been closed successfully")
 		return render(request, "cms/closed_confirm.html")
 	print("invalid")
 
-@login_required
+#@login_required
 def mapview(request):
 
 	psi_north = getPSI('north')

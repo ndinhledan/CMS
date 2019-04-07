@@ -51,12 +51,18 @@
 	        {{ form.severity.label_tag }}
 	        {% render_field form.severity class="form-control" %}
 	      </div>
+	    </div>
+	    <div class="form-row">
 	      <div class="col">
 	        {{ form.caller.label_tag }}
 	        {% render_field form.caller class="form-control" %}
 	      </div>
-	    </div>
-	    <br>
+	      <div class = 'col'>
+	        <label for = 'mobile  number'>Mobile Number:</label>
+	        {% render_field form.mobile_number class="form-control" %}
+		  </div>
+		</div>
+	   	<br>
 	    <div>
 	      {% render_field form.street_name class="form-control mr-2" %}
 	    </div>
@@ -66,7 +72,16 @@
 	        {% render_field form.apartment_number class="form-control mr-2" %}
 	      </div>
 	      <div class="col">
-	        {% render_field form.postal_code class="form-control mr-2" %}
+	        {% if form.postal_code.errors %}
+			{% render_field form.postal_code class="form-control is-invalid" %}
+			{% for error in form.postal_code.errors %}
+			<div class="invalid-feedback">
+				{{ error }}
+			</div>
+			{% endfor %}
+			{% else %}
+			{% render_field form.postal_code class="form-control mr-2" %}
+			{% endif %}
 	      </div>
 	    </div>
 	    <br>

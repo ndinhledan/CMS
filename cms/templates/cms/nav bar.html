@@ -86,10 +86,12 @@
 		top: -30px;
 	}
 
-	img {
-		width: 37%;
-		position: static;
-
+	#logo {
+		width: 15%;
+		position: absolute;
+		padding: 0;
+		top: -110%;
+		left: -5%;
 	}
 
 	nav a {
@@ -98,7 +100,7 @@
 		padding: 0px;
 	}
 
-	nav a:hover {
+	nav a:hover {	
 		color: #A3A3A3;
 	}
 
@@ -106,10 +108,12 @@
 		border: 1px solid black;
 	}
 
-
-
 	.container-fluid {
 		padding: 0;
+	}
+
+	.logout:hover {
+		text-decoration: none;
 	}
 </style>
 </head>
@@ -134,7 +138,7 @@
 
 		<!--navbar-->
 		<nav class="navbar navbar-dark bg-dark">
-			<div class="col-md-1">
+			<div class="col-sm-1 text-center">
 
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
 					aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,15 +146,15 @@
 				</button>
 			</div>
 
-			<div class="col-md-9">
+			<div class="col-md-9 text-left">
 
 				<a class="navbar-brand" href="#">
-					<img src="{% static 'cms/dfcg.png' %}" class="img-responsive center-block">
+					<img src="{% static 'cms/dfcg.png' %}" class="img-responsive center-block" id="logo">
 				</a>
 			</div>
 
 			<div class="col-md-2">
-				<a href="{% url 'cms:login' %}" style="float:right;">Logout</a>
+				<a href="{% url 'cms:login' %}" style="float:right;" class="logout">Logout</a>
 			</div>
 		</nav>
 

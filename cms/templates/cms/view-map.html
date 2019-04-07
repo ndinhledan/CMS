@@ -6,68 +6,71 @@
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{%static 'cms/css/map.css' %}">
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+
+
+</head>
+
+<style>
+    h2 {
+        padding: 1%;
+    }
+
+    #map{
+        width: 100%;
+        margin-left: 0%;
+    }
+
+    #weatherCheckbox, #incidentCheckbox, #psiCheckbox{
+        margin: 10px;
+    }
+
+
+</style>
+    <body>
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>Map of Incidents</h2>
+            </div>
+        </div>
+        <div id="map"></div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>Filter map by:</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul>
+              Reported Incidents <input id="incidentCheckbox" type="checkbox" onclick="toggleGroup('incidents')" checked="checked" />
+              Weather <input id="weatherCheckbox" type="checkbox" onclick="toggleGroup('weather')" checked="checked" />
+              PSI <input id="psiCheckbox" type="checkbox" onclick="toggleGroup('psi')" checked="checked" />
+            </ul>
+            </div>
+        </div>
+
+        
+        </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwnOKdHVcbd77ol8nQu81CPgr3CnjBfMc"></script>
         <script type="text/javascript" src ="{% static 'cms/js/map.js' %}"></script>
-</head>
+        <script>
+            var psi_north = "{{ psi_north }}";
+            var psi_south = "{{ psi_south}}";
+            var psi_east = "{{ psi_east }}";
+            var psi_west = "{{ psi_west }}";
+            var psi_central = "{{ psi_central }}";
+            var weather_north =  "{{ weather_north }}";
+            var weather_south =  "{{ weather_south }}";
+            var weather_east =  "{{ weather_east }}";
+            var weather_west =  "{{ weather_west }}";
+            var weather_central =  "{{ weather_central }}";
+            var locations = {{ data|safe }};
+        </script>
 
-<style>
-      h1{
-      text-align: center;  
-      font-size: 25px;  
-      padding:1%;
-      }
-
-      body{
-      font-size: 25px;
-      }
-      
-      #map{
-          margin: 10px;
-          width: 100%;
-          margin-top: -2%;
-      }
-
-      #weatherCheckbox, #incidentCheckbox, #psiCheckbox{
-      margin: 10px;
-      }
-                      
-</style>
-
-
-<body>
-    <div class="container-fluid">
-            <h1>Map of Incident</h1>
-            <div id="map"></div>
-            <div style="text-align: center; margin-top: 2%;">Filter map by</div>
-            <br>
-            <div class="row">
-                <div class="col-md-12 text-center">
-                <div class="sidebarmap">
-                    <ul>
-                    Reported Incidents <input id="incidentCheckbox" type="checkbox" onclick="toggleGroup('incidents')" checked="checked" />
-                    Weather <input id="weatherCheckbox" type="checkbox" onclick="toggleGroup('weather')" checked="checked" />
-                    PSI <input id="psiCheckbox" type="checkbox" onclick="toggleGroup('psi')" checked="checked" />
-                    </ul>
-                </div>
-            </div>
-    </div>
-
-        
-</body>
-
-<script>
-    var psi_north = "{{ psi_north }}";
-    var psi_south = "{{ psi_south}}";
-    var psi_east = "{{ psi_east }}";
-    var psi_west = "{{ psi_west }}";
-    var psi_central = "{{ psi_central }}";
-    var weather_north =  "{{ weather_north }}";
-    var weather_south =  "{{ weather_south }}";
-    var weather_east =  "{{ weather_east }}";
-    var weather_west =  "{{ weather_west }}";
-    var weather_central =  "{{ weather_central }}";
-    var locations = {{ data|safe }};
-</script>
+    </body>
 </html>
