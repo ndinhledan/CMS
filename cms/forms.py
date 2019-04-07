@@ -17,7 +17,17 @@ class IncidentForm(forms.ModelForm):
 			'assistance_type',
 			'severity',
 			'caller',
-			)
+			'mobile_number',
+		)
+
+	def clean_postal_code(self):
+		postal_code = self.cleaned_data['postal_code']
+		try:
+			code = int(postal_code)
+			if code // 100000 == 0 or code//100000 > 9:
+				raise forms.ValidationError('Postal code is a 6 digits number')
+		except ValueError:
+			raise forms.ValidationError('Postal code is a 6 digits number')
 
 class MessageForm(PopRequestMixin, CreateUpdateAjaxMixin,forms.ModelForm):
         class Meta:

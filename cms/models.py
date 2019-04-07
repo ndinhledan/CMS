@@ -47,6 +47,10 @@ class Incident(models.Model):
 		max_length=100,
 		default='All is good')
 
+	mobile_number = models.CharField(
+		max_length = 15,
+		default = '0000 0000')
+
 	incident_type = models.CharField(
 		max_length=3,
 		choices=INCIDENT_TYPE_CHOICES,
