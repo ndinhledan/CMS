@@ -1,5 +1,5 @@
-# CMS
-## Crisis Management System
+# CZ3003 Software Systems Analysis and Design
+## Crisis Management System (CMS)
 
 ### 1. Introduction
 CMS is a prototype website created by our team in hopes that in times of emergency government agencies can have a seamless and secured way to collaborate with each other to resolve the situation more efficiently.
