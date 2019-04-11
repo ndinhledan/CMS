@@ -29,11 +29,14 @@ import json
 from django.contrib.auth.decorators import login_required
 from cms.TelegramBotAPI import tele
 from cms.TwitterAPI import tweets
+import requests
 # Create your views here.
 
 class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
 		     generic.CreateView):
 
+	
+	model = Incident
 	template_name = 'cms/Message.html'
 	def get(self, request, pk):
 		form = MessageForm()
@@ -44,7 +47,7 @@ class MessageCreateView(PassRequestMixin, SuccessMessageMixin,
 		obj = Incident.objects.get(pk=pk)
 		if form.is_valid():
 			Message = form.cleaned_data['message']
-			obj.is_message = Message
+			obj.message = Message
 			postal_code = obj.location[-6:]
 			obj.save()
 			tele(postal_code,Message)
@@ -108,6 +111,12 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 			incident.submitter = request.user
 			incident.lat, incident.long = getCoordinates(int(form.data['postal_code']))
 			incident.save()
+			requests.post('https://textbelt.com/text', {
+			  'phone': '+6597512690',
+			  'message': '*insert text here* ' + 'DEFAULT MESSAGE IF FREE',
+			  'key': 'textbelt',    #textbelt is default key
+			                        #new key will be given when paid.
+			    })
 			return HttpResponseRedirect(reverse('cms:success_sms'))
 		return render(request, self.template_name, {'form': form})
 

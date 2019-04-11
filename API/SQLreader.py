@@ -15,53 +15,61 @@ def Num_Of_Case(postal):
     
     conn = sqlite3.connect('C:\\Users\\VMadmin\\Downloads\\CMS-FrontEndKKS\\CMS-FrontEndKKS\\db.sqlite3')
     c = conn.cursor()
-    current_time = datetime.now().strftime('%Y-%m-%d %H')
-    previous_time = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H')
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M')
+    previous_time = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H:%M')
     c.execute("SELECT * FROM cms_incident")
     open_case = close_case =  open_case_all = close_case_all = 0
     for row in c.fetchall():
-        location = str((row[3]))
+        location = (row[4])
         if location[-6:-4] in North and postal[:2] in North:
-            id_time = (row[1])[:13]
+            id_time = (row[2])[:16]
             if(id_time > previous_time) and (id_time < current_time):
                 open_case += 1
-                close_id = (row[6])
+                close_id = (row[7])
                 if(close_id != None):
                     close_case += 1
+                    open_case -= 1
         if location[-6:-4] in South and postal[:2] in South:
-            id_time = (row[1])[:13]
+            id_time = (row[2])[:16]
             if(id_time > previous_time) and (id_time < current_time):
                 open_case += 1
-                close_id = (row[6])
+                close_id = (row[7])
                 if(close_id != None):
                     close_case += 1
+                    open_case -= 1
         if location[-6:-4] in East and postal[:2] in East:
-            id_time = (row[1])[:13]
+            id_time = (row[2])[:16]
             if(id_time > previous_time) and (id_time < current_time):
                 open_case += 1
-                close_id = (row[6])
+                close_id = (row[7])
                 if(close_id != None):
                     close_case += 1
+                    open_case -= 1
         if location[-6:-4] in West and postal[:2] in West:
-            id_time = (row[1])[:13]
+            id_time = (row[2])[:16]
             if(id_time > previous_time) and (id_time < current_time):
                 open_case += 1
-                close_id = (row[6])
+                close_id = (row[7])
                 if(close_id != None):
                     close_case += 1
+                    open_case -= 1
         if location[-6:-4] in Central and postal[:2] in Central:
-            id_time = (row[1])[:13]
+            id_time = (row[2])[:16]
             if(id_time > previous_time) and (id_time < current_time):
                 open_case += 1
-                close_id = (row[6])
+                close_id = (row[7])
                 if(close_id != None):
                     close_case += 1
+                    open_case -= 1
     c.execute("SELECT * FROM cms_incident")
     for row in c.fetchall():
-        id_time = (row[1])[:13]
-        if(id_time > previous_time) and (id_time < current_time):
-            open_case_all += 1
-            close_id = (row[6])
-            if(close_id != None):
+        id_time = (row[2])[:16]
+        close_id = (row[7])
+        if(close_id != None):
+            if(id_time > previous_time) and (id_time < current_time):
                 close_case_all += 1
+        else:
+            open_case_all += 1
     return(open_case,close_case,open_case_all,close_case_all)
+
+print(Num_Of_Case(''))
