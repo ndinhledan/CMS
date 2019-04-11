@@ -104,9 +104,7 @@ class CreateIncidentView(LoginRequiredMixin, generic.TemplateView):
 		form = IncidentForm(request.POST)
 		if form.is_valid():
 			incident = form.save(commit=False)
-
 			location = form.cleaned_data['street_name'] + " " + form.cleaned_data['apartment_number'] +" " + form.data['postal_code']
-
 			incident.location = location
 			incident.submitter = request.user
 			incident.lat, incident.long = getCoordinates(int(form.data['postal_code']))
