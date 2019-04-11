@@ -1,11 +1,21 @@
+{% include "cms/nav bar.html" %}
+
 {% load widget_tweaks %}
 <!DOCTYPE html>
 <html>
 <head>
   <title>CMS</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-    crossorigin="anonymous">
 </head>
+
+<style>
+  .container {
+    padding: 5%;
+  }
+
+  .col-md-12 {
+    font-size: 22px;
+  }
+</style>
 <body>
 <div class="container">
   <form method="post">
@@ -18,7 +28,11 @@
     </div>
     {% endif %}
     <div class = "form-group">
+      <div class="row">
+        <div class="col-md-12 text-center">
       {{ form.message.label_tag }}
+    </div>
+  </div>
       <textarea  rows="3"type="text" name="message" value="All is good" maxlength="100" class="form-control" required="" id="id_message"style="margin-top: 0px; margin-bottom: 0px; height: 128px;"></textarea>
       {% for error in field.errors %}
         <p class="help-block">{{ error }}</p>

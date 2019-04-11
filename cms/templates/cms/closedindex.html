@@ -91,7 +91,7 @@
 			position: relative;
 			display: none;
 			width: 10%;
-			margin-left: -6%;
+			margin-left: -9%;
 			text-align: center;
 
 			
@@ -100,15 +100,25 @@
 			#id_assistance_type {
 				position: relative;
 				display: none;
-				margin-left: -6%;
+				margin-left: -9%;
 
 			}
 	}
 
 	#message {
-		position: static;
-		color: red;
+		position: absolute;
+		top: 23%;
+		color: #000000;
 		z-index: 1;
+		/*top right bottom left*/
+		background-color: #FDEF8D;
+		margin-left: 1.5%;
+		font-size: 22px;
+		border-radius: 4px;
+		padding: 5px;
+		z-index: -1;
+		display: none;
+		width: 97%;
 	}
 
 	.case-detail {
@@ -152,7 +162,7 @@
 	<form id="filter" method="GET">
 		<div class="row" style="margin-top: 2%;">
 			<div class="col-md-6">
-				<input type="text" class="form-control" placeholder="Please enter the case ID here" name="id" id="id_id" autocomplete="off">
+				<input type="text" class="form-control" placeholder="Please enter the case ID here" name="id" id="id_id" autocomplete="off" style="border:1px solid black;">
 			</div>
 
 			<div class="col-md-2 text-right">
@@ -168,7 +178,7 @@
 			</div>
 
 			<div class="col-md-2 text-center" >
-					<input type="text" name="incident_day" value="" class="datepicker form-control" id="id_incident_day" autocomplete="off" style="border:1px solid black">
+					<input type="text" name="incident_day" value="" class="datepicker form-control" id="id_incident_day" autocomplete="off" style="border:1px solid black" placeholder="Click to show calendar">
 			</div>
 
 
@@ -249,9 +259,10 @@
 				</td>
 			</tr>
 			{% empty %}
-    		<div class = "alert alert-warning">
-    			<strong>Info</strong> No Incident found.
-    		</div>
+    			<script>
+		    		document.getElementById("message").style.display = "block";
+		    		document.getElementById("message").innerHTML = "No Incident found. Please choose a different category or value.";
+		    	</script>
 			{% endfor %}
 			</tbody>
 		</table>
@@ -305,6 +316,7 @@
 	{
 		var x = document.getElementById("id_assistance_type");
 		type = x.options[x.selectedIndex].text;
+		document.getElementById("message").style.display = "block";
 		document.getElementById("message").innerHTML = ("You've selected to filter by the type of assistance: " + type);
 		
 	}
@@ -313,6 +325,7 @@
 	{
 		var x = document.getElementById("id_severity_level");
 		level = x.options[x.selectedIndex].text;
+		document.getElementById("message").style.display = "block";
 		document.getElementById("message").innerHTML = ("You've selected to filter by level of severity: " + level);
 
 	}
